@@ -1,0 +1,25 @@
+#header{
+      /* Rellenamos el fondo */
+      min-width: 1255px;
+
+      /* Escalamiento proporcional */
+      width: 100%;
+      height: auto;
+
+      /* Posicionamiento */
+      position: relative;
+      top: 0;
+      left: 0;
+}
+
+#footer{
+      min-width: 1255px;
+      /* Escalamiento proporcional */
+      width: 100%;
+      height: auto;
+
+      /* Posicionamiento */
+      position: relative;
+      bottom: 0;
+      left: 0;
+}

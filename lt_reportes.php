@@ -1,0 +1,3 @@
+<?php
+	echo 'GENERACION Y/O DESCARGA DE REPORTES?';
+?>

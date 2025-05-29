@@ -1,0 +1,44 @@
+SELECT id, clavecatastral
+FROM (  SELECT  *, 
+                COUNT(*) OVER(PARTITION BY clavecatastral) N
+        FROM ifrem.mun094) as A
+WHERE N > 1
+
+
+
+select count(*) from ctv2023.vinc094
+
+select count(*) from ifrem.claves where mun=94 and vinculada is true
+
+select count(*) from ifrem.mun094
+
+----para identificar los que están como falso pero sí tiene info
+select clave_catastral_igecem from ifrem.mun094 as a
+inner join (select * from ifrem.claves where mun=94 and vinculada is false) as b
+on a.clavecatastral=b.clave_catastral_igecem
+
+
+
+----para igualar unos false que sí tenían información
+UPDATE ifrem.claves
+   SET vinculada=true
+ WHERE clave_catastral_igecem in (select clave_catastral_igecem from ifrem.mun094 as a
+	inner join (select * from ifrem.claves where mun=94 and vinculada is false) as b
+	on a.clavecatastral=b.clave_catastral_igecem)
+
+
+
+-------------------------------
+SELECT distinct(clave5)
+FROM (  SELECT  *, 
+                COUNT(*) OVER(PARTITION BY clave5) N
+        FROM ctv2023.vinc094) as A
+WHERE N > 1
+
+
+
+SELECT distinct(clave5),count(clave5)
+	FROM (  SELECT  *, 
+			COUNT(*) OVER(PARTITION BY clave5) N
+		FROM ctv2023.vinc094) as A
+	WHERE N > 1 group by clave5

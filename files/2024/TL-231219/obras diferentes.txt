@@ -1,0 +1,3 @@
+select a."EncIdn",a."CptTpo",b."CptTpo" from "TblCpt" as a  
+inner join "CptAux" as b on a."EncIdn"=b."EncIdn_id"
+where a."CptTpo"=2 and a."CptEstatus"=0 and b."CptTpo"=1 order by a."EncIdn"
