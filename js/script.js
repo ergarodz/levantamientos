@@ -916,7 +916,7 @@ function terminarProcesoDos(usuario_envio){
 
 
 									
-						 			/* dualidad //////aqui se envía correo avisando que se envió a topografía
+						 			//////aqui se envía correo avisando que se envió a topografía
 						 			///se realiza envío de correo
 								    correo_destino='erick.garcia.rdz@hotmail.com'; //alert(correo_destino);
 								    asunto='Aviso de envío a Topografía'; 
@@ -957,7 +957,6 @@ function terminarProcesoDos(usuario_envio){
 								    		}
 								    	}
 								    });
-						 			dualidad */
 
 
 
@@ -1144,7 +1143,7 @@ function terminarProcesoTres(){
 			}
 }
 
-/*dualidad function mostrarInfoCierre(){////aqui se carga información en el modal, si es que ya se había registrado información con anterioridad
+function mostrarInfoCierre(){////aqui se carga información en el modal, si es que ya se había registrado información con anterioridad
 	var fup=$("#fup").val();
 
 	////verificamos si el usuario GEO ya terminó su registro, mostrado en los campos salida_equipo y regreso_equipo de la tabla registros
@@ -1199,44 +1198,44 @@ function terminarProcesoTres(){
 			}
 		}
 	});	
-}*/
-function mostrarInfoCierre(){////aqui se carga información en el modal, si es que ya se había registrado información con anterioridad
-	var fup=$("#fup").val();
-
-	///abrimos el modal
-	$("#procesoCuatroInfo").modal('show');
-
-	var folioRegistro4 = $("#fol").val();////numero de folio, para buscar en tabla procesodos
-	var folioGeo = "";
-	var folioGeo2 = "";
-	var identificadorGeo="", folioGeo="", anioGeo="";
-	$.post("acceso/route.php",{acceess:94,folioRegistro:folioRegistro4},function(yz){ //87////se cambia al 94 porque es exactamente lo mismo, obtiene info de la tabla procesodos
-
-		 if (yz == 100 || yz == "100") { 
-			 //sin registro
-			 ////no puede estar sin registro, porque desde etapas anteriores ya se hizo el registro y solo se va actualizando la tabla
-		 }else{
-			 //con registro
-			 $(yz).each(function(key,valuee){
-				 //dividir el folio GEO ----- ya no se usa, porque ahora esto lo llena geografia y se muestra el folio como ellos lo pongan
-				 	folioGeo=valuee.foliogeo;
-				 	folioGeo2 = folioGeo.split('/');
-					identificadorGeo = folioGeo2[0];
-				 	folioGeo = folioGeo2[1];
-				 	anioGeo = folioGeo2[2];
-
-				 	$("#identificadorGeo").val(identificadorGeo);
-				 	$("#folGeo").val(folioGeo);
-				 	$("#anioGeo").val(anioGeo);
-
-				 if (valuee.fechalevantamiento != "") {
-					 $("#fechaentregaGeo").val( moment(valuee.fechalevantamiento).format('YYYY-MM-DD') );
-				 }
-				 $("#folio_geo").val(valuee.foliogeo);
-			 });
-		 }
-	});
 }
+// function mostrarInfoCierre(){////aqui se carga información en el modal, si es que ya se había registrado información con anterioridad
+// 	var fup=$("#fup").val();
+
+// 	///abrimos el modal
+// 	$("#procesoCuatroInfo").modal('show');
+
+// 	var folioRegistro4 = $("#fol").val();////numero de folio, para buscar en tabla procesodos
+// 	var folioGeo = "";
+// 	var folioGeo2 = "";
+// 	var identificadorGeo="", folioGeo="", anioGeo="";
+// 	$.post("acceso/route.php",{acceess:94,folioRegistro:folioRegistro4},function(yz){ //87////se cambia al 94 porque es exactamente lo mismo, obtiene info de la tabla procesodos
+
+// 		 if (yz == 100 || yz == "100") { 
+// 			 //sin registro
+// 			 ////no puede estar sin registro, porque desde etapas anteriores ya se hizo el registro y solo se va actualizando la tabla
+// 		 }else{
+// 			 //con registro
+// 			 $(yz).each(function(key,valuee){
+// 				 //dividir el folio GEO ----- ya no se usa, porque ahora esto lo llena geografia y se muestra el folio como ellos lo pongan
+// 				 	folioGeo=valuee.foliogeo;
+// 				 	folioGeo2 = folioGeo.split('/');
+// 					identificadorGeo = folioGeo2[0];
+// 				 	folioGeo = folioGeo2[1];
+// 				 	anioGeo = folioGeo2[2];
+
+// 				 	$("#identificadorGeo").val(identificadorGeo);
+// 				 	$("#folGeo").val(folioGeo);
+// 				 	$("#anioGeo").val(anioGeo);
+
+// 				 if (valuee.fechalevantamiento != "") {
+// 					 $("#fechaentregaGeo").val( moment(valuee.fechalevantamiento).format('YYYY-MM-DD') );
+// 				 }
+// 				 $("#folio_geo").val(valuee.foliogeo);
+// 			 });
+// 		 }
+// 	});
+// }
 
 function actualizarProcesoCuatro(){
 
@@ -1291,21 +1290,21 @@ function terminarProcesoCuatro(){
 	var fechaentregaGeo = $("#fechaentregaGeo").val(); //fecha de levantamiento
 	
 
-	var identificadorGeo = $("#identificadorGeo").val(); //identificador para el folio GEO
-	var folGeo = $("#folGeo").val(); // folio  geo correspondiente
-	var anioGeo = $("#anioGeo").val();// año del folio geo
-	var idConcluido = "";// folio GEO completo
-	var folio_geo = identificadorGeo+"/"+folGeo+"/"+anioGeo;
+	// var identificadorGeo = $("#identificadorGeo").val(); //identificador para el folio GEO
+	// var folGeo = $("#folGeo").val(); // folio  geo correspondiente
+	// var anioGeo = $("#anioGeo").val();// año del folio geo
+	// var idConcluido = "";// folio GEO completo
+	// var folio_geo = identificadorGeo+"/"+folGeo+"/"+anioGeo;
 
-	//dualidad var folio_geo=$("#folio_geo").val();
+	var folio_geo=$("#folio_geo").val();
 
 	if(fechaentregaGeo==""){
 		$("#titulo_modal_ad").html('Registro faltante');
 		$("#mensaje_modal_ad").html('Para continuar con el proceso es necesario seleccionar la fecha de levantamiento');
 		$("#modal_mensaje_ad").modal('show');
 	}else{
-		if (identificadorGeo == "" || folGeo == "" || anioGeo == "") {
-		//dualidad if(folio_geo==""){
+		//if (identificadorGeo == "" || folGeo == "" || anioGeo == "") {
+		if(folio_geo==""){
 			//falte registar un campo para completar el FOLIO GEO	
 			$("#titulo_modal_ad").html('Registro faltante');
 			$("#mensaje_modal_ad").html('Para continuar con el proceso es necesario completar el folio GEO');
@@ -1519,7 +1518,7 @@ function detalleEtapas(proceso,fup,id){
 	 	});
 }
 
-/*dualidad function notificacionColindantes(){///erickkk
+function notificacionColindantes(){///erickkk
 	///llama primero a la info de procesodos y pone fecha si es que ya hay
 	var fup= $("#fup").val();
 	
@@ -1554,24 +1553,24 @@ function detalleEtapas(proceso,fup,id){
 			}
 		}
 	});
-}dualidad */
-function notificacionColindantes(){///erickkk
-	///llama primero a la info de procesodos y pone fecha si es que ya hay
-	var fup= $("#fup").val();	
-	///obtenemos la fecha de notificación, en caso de que ya se haya guardado
-	$.post("acceso/route.php",{acceess:102,fup:fup},function(w){
-		if(w!=100){
-			$(w).each(function(key,v){
-				if(v.fechanotificacion!=""){
-					$("#fechanotif").val( moment(v.fechanotificacion).format('YYYY-MM-DD') );
-				}
-			});				
-		}
-	});
-	$("#modal_notificacion").modal('show');	
-
-
 }
+// function notificacionColindantes(){///erickkk
+// 	///llama primero a la info de procesodos y pone fecha si es que ya hay
+// 	var fup= $("#fup").val();	
+// 	///obtenemos la fecha de notificación, en caso de que ya se haya guardado
+// 	$.post("acceso/route.php",{acceess:102,fup:fup},function(w){
+// 		if(w!=100){
+// 			$(w).each(function(key,v){
+// 				if(v.fechanotificacion!=""){
+// 					$("#fechanotif").val( moment(v.fechanotificacion).format('YYYY-MM-DD') );
+// 				}
+// 			});				
+// 		}
+// 	});
+// 	$("#modal_notificacion").modal('show');	
+
+
+// }
 
 function fechaNotificacionCo(){
 	var fechaNotificacion= $("#fechanotif").val();
@@ -1640,7 +1639,7 @@ function envioDirGeo(){
 		success:function(yz){
 			//alert(yz);
 	 		if(yz.areaproduc=='Geografia'){
-	 			////dualidad $("#fechaEnvioDirGeogra").val( moment( yz.fecha_equipo_entrega ).format('YYYY-MM-DD') );
+	 			$("#fechaEnvioDirGeogra").val( moment( yz.fecha_equipo_entrega ).format('YYYY-MM-DD') );
 				
 				////fechatermino es la fecha de envío a la dirección de geografía
 				$("#fechaEnvioDirGeogra").val( moment( yz.fechatermino ).format('YYYY-MM-DD') );
@@ -1822,173 +1821,68 @@ function CalcularCostoTotal(anio_tarifa){
     });
 }
 
-// dualidad function entregaDelegacion(){
-// 	var idFolioSiete = $("#fol").val();////desde que se busca el registro, se actualiza este dato
-// 	var fup=$("#fup").val();
-// 	//alert(fup);
-// 	////primero obtenemos la fecha_recepcion de la tabla registros, para saber que tarifa usar
-// 	var fecha_rec=''; 	var superficie_resultante='';	var anio_tarifa='0';
-
-// 	$.ajax({
-// 		url:'acceso/route.php',
-// 		data:{acceess:106,fup:fup},/////se obtiene la fecha_recepcion y la superficieresultante
-// 		dataType:'json',
-// 		type:'post',
-// 		success:function(v){
-// 			fecha_rec=v.fecha_recepcion;
-// 			//alert(fecha_rec);
-// 			superficie_resultante=v.superficieresultante;
-
-// 			fecha_compara=new Date('2024-03-19');///hasta el 18 de marzo se va trabajar ocn la tarifa del 2023
-// 			fecha_recepcion_date=new Date(fecha_rec); 
-// 			if(fecha_compara<=fecha_recepcion_date){
-// 				//alert('Se trabaja con tarifa del 2024');
-// 				anio_tarifa=2025;
-// 			}else{
-// 				//alert('se ocupan valores del 2023');
-// 				anio_tarifa=2024;
-// 			}
-
-// 			if (v.fechanotientrega != "") {
-// 				$("#fechaentregaDelegacion").val( moment(v.fechanotientrega).format('YYYY-MM-DD') );
-// 			}
-
-
-
-// 			$.post("acceso/route.php",{acceess:78,supInicial:superficie_resultante,anio_tarifa:anio_tarifa},function(yz){
-// 				$(yz).each(function(key,valuee){
-// 		    		superficie=superficie_resultante - valuee.limiteinferior;
-// 		    		factorAplicable=superficie * valuee.factoraplicable;
-// 		    		cuotaFija = parseFloat(valuee.cuotafija);
-// 		    		factorAplicable2=parseFloat(factorAplicable);
-// 		    		cuotaFija2 = factorAplicable2 + cuotaFija;
-// 		    	});
-
-// 				totalparcial=Math.round(cuotaFija2)
-// 				totalfinal= totalparcial.toLocaleString("en-US", { style: "currency", currency: "USD" });				
-// 				//alert(totalfinal);
-// 				$("#costoTotal").val(totalfinal);
-				    
-// 		    });		
-// 			//////estos valores se ponene para cuando se ha guardado, pero no terminado el proceso
-// 			$("#superficieResultante").val(v.superficieresultante);
-// 			//$("#costoTotal").val(v.costototal);
-// 			$("#diferencias").val(v.diferencia);
-// 			$("#diDeRe").val(v.tipooficio);
-// 			$("#foliodiDeRe").val(v.recibofup);
-
-// 			///erick, este es tu yo del futuro, aqui obtienes el valor de las observaciuones agregadas
-// 			$("#obs_proceso6").val(v.obs_proceso6); 
-
-// 			tipoNodeOficio();////ERICK, este es tu yo del pasado, aquí llamaste este método que ya estaba creado para que se eligieran solos los campos de acuerdo a la opción del select
-
-// 			////se agrega para que al cargar la info se realice el proceso de calcular costo tototal
-// 			CalcularCostoTotal(anio_tarifa);
-// 		}
-// 	});	
-
-// 	// $.post("acceso/route.php",{acceess:71,idFolioSiete:idFolioSiete},function(yz){ ////de qui ahora solo obtenemos la superficie resultante
-
-// 	// 	if ( yz != "100") {
-// 	// 		$(yz).each(function(key,valuee){
-
-// 	// 			if (valuee.fechanotientrega != "") {////
-// 	// 				$("#fechaentregaDelegacion").val( moment(valuee.fechanotientrega).format('YYYY-MM-DD') );
-// 	// 			}
-				
-// 	// 			$("#superficieResultante").val(valuee.superficieresultante);
-// 	// 			$("#costoTotal").val(valuee.costototal);
-// 	// 			$("#diferencias").val(valuee.diferencia);
-// 	// 			$("#diDeRe").val(valuee.tipooficio);
-// 	// 			$("#foliodiDeRe").val(valuee.recibofup);
-
-// 	// 			///erick, este es tu yo del futuro, aqui obtienes el valor de las observaciuones agregadas
-// 	// 			$("#obs_proceso6").val(valuee.obs_proceso6); 
-
-// 	// 			tipoNodeOficio();////ERICK, este es tu yo del pasado, aquí llamaste este método que ya estaba creado para que se eligieran solos los campos de acuerdo a la opción del select
-
-// 	// 			////se agrega para que al cargar la info se realice el proceso de calcular costo tototal
-// 	// 			CalcularCostoTotal();
-// 	// 		});
-// 	// 	}
-// 	// });
-// dualidad }
 function entregaDelegacion(){
 	var idFolioSiete = $("#fol").val();////desde que se busca el registro, se actualiza este dato
 	var fup=$("#fup").val();
+	//alert(fup);
 	////primero obtenemos la fecha_recepcion de la tabla registros, para saber que tarifa usar
 	var fecha_rec=''; 	var superficie_resultante='';	var anio_tarifa='0';
 
 	$.ajax({
 		url:'acceso/route.php',
-		data:{acceess:106,fup:fup},/////se obtiene la fecha_recepcion para saber con que año de la tarifa se trabaja
+		data:{acceess:106,fup:fup},/////se obtiene la fecha_recepcion y la superficieresultante
 		dataType:'json',
 		type:'post',
 		success:function(v){
 			fecha_rec=v.fecha_recepcion;
+			//alert(fecha_rec);
+			superficie_resultante=v.superficieresultante;
 
-			fecha_compara=new Date('2025-03-26');///hasta el 25 de marzo se va trabajar ocn la tarifa del 2024 
+			fecha_compara=new Date('2025-03-26');///hasta el 25 de marzo se va trabajar ocn la tarifa del 2024
 			fecha_recepcion_date=new Date(fecha_rec); 
 			if(fecha_compara<=fecha_recepcion_date){
-				//alert('Se trabaja con tarifa del 2024');
 				anio_tarifa=2025;
 			}else{
-				//alert('se ocupan valores del 2024');
 				anio_tarifa=2024;
 			}
-			$("#anio_tarifa").val(anio_tarifa);			
 
-			////get_info_procesotres ---- se busca si ya existe superficie resultante, para calcular el costo total
-			$.ajax({
-				url:'acceso/route.php',
-				data:{acceess:108,fup:fup},/////se obtiene la fecha_recepcion y la superficieresultante
-				dataType:'json',
-				type:'post',
-				success:function(w){
-					//alert(w);
-					if(w==false){
-						//alert('No se ha guardado la superficie resultante');
-						////se abre el modal, pero sin valores
-					}else{
-						//alert('Aquí se ejecuta el calculo del costo total');
-						superficie_resultante=w.superficieresultante;
+			if (v.fechanotientrega != "") {
+				$("#fechaentregaDelegacion").val( moment(v.fechanotientrega).format('YYYY-MM-DD') );
+			}
 
-						////este ajax calcula el costo total, dependiendo de la superficie resultante
-						$.post("acceso/route.php",{acceess:78,supInicial:superficie_resultante,anio_tarifa:anio_tarifa},function(yz){
-							$(yz).each(function(key,valuee){
-								superficie=superficie_resultante - valuee.limiteinferior;
-								factorAplicable=superficie * valuee.factoraplicable;
-								cuotaFija = parseFloat(valuee.cuotafija);
-								factorAplicable2=parseFloat(factorAplicable);
-								cuotaFija2 = factorAplicable2 + cuotaFija;
-							});
 
-							totalparcial=Math.round(cuotaFija2)
-							totalfinal= totalparcial.toLocaleString("en-US", { style: "currency", currency: "USD" });				
-							//alert(totalfinal);
-							$("#costoTotal").val(totalfinal);
 
-							$("#fechaentregaDelegacion").val( moment(w.fechanotientrega).format('YYYY-MM-DD') );
-							//////estos valores se ponene para cuando se ha guardado, pero no terminado el proceso
-							$("#superficieResultante").val(superficie_resultante);
-							$("#diferencias").val(w.diferencia);
-							$("#diDeRe").val(w.tipooficio);
-							$("#foliodiDeRe").val(w.recibofup);
-							///erick, este es tu yo del futuro, aqui obtienes el valor de las observaciuones agregadas
-							$("#obs_proceso6").val(w.obs_proceso6); 
+			$.post("acceso/route.php",{acceess:78,supInicial:superficie_resultante,anio_tarifa:anio_tarifa},function(yz){
+				$(yz).each(function(key,valuee){
+		    		superficie=superficie_resultante - valuee.limiteinferior;
+		    		factorAplicable=superficie * valuee.factoraplicable;
+		    		cuotaFija = parseFloat(valuee.cuotafija);
+		    		factorAplicable2=parseFloat(factorAplicable);
+		    		cuotaFija2 = factorAplicable2 + cuotaFija;
+		    	});
 
-							tipoNodeOficio();////ERICK, este es tu yo del pasado, aquí llamaste este método que ya estaba creado para que se eligieran solos los campos de acuerdo a la opción del select
+				totalparcial=Math.round(cuotaFija2)
+				totalfinal= totalparcial.toLocaleString("en-US", { style: "currency", currency: "USD" });				
+				//alert(totalfinal);
+				$("#costoTotal").val(totalfinal);
+				    
+		    });		
+			//////estos valores se ponene para cuando se ha guardado, pero no terminado el proceso
+			$("#superficieResultante").val(v.superficieresultante);
+			//$("#costoTotal").val(v.costototal);
+			$("#diferencias").val(v.diferencia);
+			$("#diDeRe").val(v.tipooficio);
+			$("#foliodiDeRe").val(v.recibofup);
 
-							////se agrega para que al cargar la info se realice el proceso de calcular costo tototal
-							CalcularCostoTotal(anio_tarifa);
-								
-						});	
-					}
-				}
-			});	
+			///erick, este es tu yo del futuro, aqui obtienes el valor de las observaciuones agregadas
+			$("#obs_proceso6").val(v.obs_proceso6); 
+
+			tipoNodeOficio();////ERICK, este es tu yo del pasado, aquí llamaste este método que ya estaba creado para que se eligieran solos los campos de acuerdo a la opción del select
+
+			////se agrega para que al cargar la info se realice el proceso de calcular costo tototal
+			CalcularCostoTotal(anio_tarifa);
 		}
 	});	
-
 
 	// $.post("acceso/route.php",{acceess:71,idFolioSiete:idFolioSiete},function(yz){ ////de qui ahora solo obtenemos la superficie resultante
 
@@ -2015,7 +1909,110 @@ function entregaDelegacion(){
 	// 		});
 	// 	}
 	// });
-}
+ }
+// function entregaDelegacion(){
+// 	var idFolioSiete = $("#fol").val();////desde que se busca el registro, se actualiza este dato
+// 	var fup=$("#fup").val();
+// 	////primero obtenemos la fecha_recepcion de la tabla registros, para saber que tarifa usar
+// 	var fecha_rec=''; 	var superficie_resultante='';	var anio_tarifa='0';
+
+// 	$.ajax({
+// 		url:'acceso/route.php',
+// 		data:{acceess:106,fup:fup},/////se obtiene la fecha_recepcion para saber con que año de la tarifa se trabaja
+// 		dataType:'json',
+// 		type:'post',
+// 		success:function(v){
+// 			fecha_rec=v.fecha_recepcion;
+
+// 			fecha_compara=new Date('2025-03-26');///hasta el 25 de marzo se va trabajar ocn la tarifa del 2024 
+// 			fecha_recepcion_date=new Date(fecha_rec); 
+// 			if(fecha_compara<=fecha_recepcion_date){
+// 				//alert('Se trabaja con tarifa del 2024');
+// 				anio_tarifa=2025;
+// 			}else{
+// 				//alert('se ocupan valores del 2024');
+// 				anio_tarifa=2024;
+// 			}
+// 			$("#anio_tarifa").val(anio_tarifa);			
+
+// 			////get_info_procesotres ---- se busca si ya existe superficie resultante, para calcular el costo total
+// 			$.ajax({
+// 				url:'acceso/route.php',
+// 				data:{acceess:108,fup:fup},/////se obtiene la fecha_recepcion y la superficieresultante
+// 				dataType:'json',
+// 				type:'post',
+// 				success:function(w){
+// 					//alert(w);
+// 					if(w==false){
+// 						//alert('No se ha guardado la superficie resultante');
+// 						////se abre el modal, pero sin valores
+// 					}else{
+// 						//alert('Aquí se ejecuta el calculo del costo total');
+// 						superficie_resultante=w.superficieresultante;
+
+// 						////este ajax calcula el costo total, dependiendo de la superficie resultante
+// 						$.post("acceso/route.php",{acceess:78,supInicial:superficie_resultante,anio_tarifa:anio_tarifa},function(yz){
+// 							$(yz).each(function(key,valuee){
+// 								superficie=superficie_resultante - valuee.limiteinferior;
+// 								factorAplicable=superficie * valuee.factoraplicable;
+// 								cuotaFija = parseFloat(valuee.cuotafija);
+// 								factorAplicable2=parseFloat(factorAplicable);
+// 								cuotaFija2 = factorAplicable2 + cuotaFija;
+// 							});
+
+// 							totalparcial=Math.round(cuotaFija2)
+// 							totalfinal= totalparcial.toLocaleString("en-US", { style: "currency", currency: "USD" });				
+// 							//alert(totalfinal);
+// 							$("#costoTotal").val(totalfinal);
+
+// 							$("#fechaentregaDelegacion").val( moment(w.fechanotientrega).format('YYYY-MM-DD') );
+// 							//////estos valores se ponene para cuando se ha guardado, pero no terminado el proceso
+// 							$("#superficieResultante").val(superficie_resultante);
+// 							$("#diferencias").val(w.diferencia);
+// 							$("#diDeRe").val(w.tipooficio);
+// 							$("#foliodiDeRe").val(w.recibofup);
+// 							///erick, este es tu yo del futuro, aqui obtienes el valor de las observaciuones agregadas
+// 							$("#obs_proceso6").val(w.obs_proceso6); 
+
+// 							tipoNodeOficio();////ERICK, este es tu yo del pasado, aquí llamaste este método que ya estaba creado para que se eligieran solos los campos de acuerdo a la opción del select
+
+// 							////se agrega para que al cargar la info se realice el proceso de calcular costo tototal
+// 							CalcularCostoTotal(anio_tarifa);
+								
+// 						});	
+// 					}
+// 				}
+// 			});	
+// 		}
+// 	});	
+
+
+// 	// $.post("acceso/route.php",{acceess:71,idFolioSiete:idFolioSiete},function(yz){ ////de qui ahora solo obtenemos la superficie resultante
+
+// 	// 	if ( yz != "100") {
+// 	// 		$(yz).each(function(key,valuee){
+
+// 	// 			if (valuee.fechanotientrega != "") {////
+// 	// 				$("#fechaentregaDelegacion").val( moment(valuee.fechanotientrega).format('YYYY-MM-DD') );
+// 	// 			}
+				
+// 	// 			$("#superficieResultante").val(valuee.superficieresultante);
+// 	// 			$("#costoTotal").val(valuee.costototal);
+// 	// 			$("#diferencias").val(valuee.diferencia);
+// 	// 			$("#diDeRe").val(valuee.tipooficio);
+// 	// 			$("#foliodiDeRe").val(valuee.recibofup);
+
+// 	// 			///erick, este es tu yo del futuro, aqui obtienes el valor de las observaciuones agregadas
+// 	// 			$("#obs_proceso6").val(valuee.obs_proceso6); 
+
+// 	// 			tipoNodeOficio();////ERICK, este es tu yo del pasado, aquí llamaste este método que ya estaba creado para que se eligieran solos los campos de acuerdo a la opción del select
+
+// 	// 			////se agrega para que al cargar la info se realice el proceso de calcular costo tototal
+// 	// 			CalcularCostoTotal();
+// 	// 		});
+// 	// 	}
+// 	// });
+// }
 
 function actualizarProcesoSiete(){
 

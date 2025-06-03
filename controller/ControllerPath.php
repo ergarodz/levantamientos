@@ -54,11 +54,11 @@ class Controllermaster {
   }
 
   public function get_registros($fup){
-    $sql='select * from registros where activo is true and fup=? ;';
-    // dualidad $sql='select a.fecha_recepcion, b.*
-    //       from registros as a 
-    //       join procesotres as b on b.fol=a.id
-    // dualidad      where a.activo is true and a.fup=? ;';
+    //$sql='select * from registros where activo is true and fup=? ;';
+    $sql='select a.fecha_recepcion, b.*
+          from registros as a 
+          join procesotres as b on b.fol=a.id
+          where a.activo is true and a.fup=? ;';
     $query=$this->db->prepare($sql);
     $query->execute([ $fup ]);
     return $query->fetch(PDO::FETCH_OBJ);
@@ -93,16 +93,16 @@ class Controllermaster {
   }
 
   public function get_info_enviadoDirGeo($fup){
-    $sql='select b.*
-      from registros as a
-      join procesodos as b on a.id=b.folio 
-      where a.fup=? and a.activo is true ;';
-
-    // dualidad $sql='select b.areaproduc, c.fecha_equipo_entrega
+    // $sql='select b.*
     //   from registros as a
     //   join procesodos as b on a.id=b.folio 
-    //   join geo_lt as c on a.fup=c.fup
-    // dualidad  where a.fup=? ';
+    //   where a.fup=? and a.activo is true ;';
+
+    $sql='select b.areaproduc, c.fecha_equipo_entrega
+      from registros as a
+      join procesodos as b on a.id=b.folio 
+      join geo_lt as c on a.fup=c.fup
+      where a.fup=? ';
     $query=$this->db->prepare($sql);
     $query->execute([$fup]);
     return $query->fetch(PDO::FETCH_OBJ);
@@ -267,14 +267,14 @@ class Controllermaster {
 
   public function buscaRegistroProceDos_fup($c,$fup){
 
-      $query = "select * from procesodos where folio=(select id from registros where fup='$fup' and activo is true) ;";
+      // buena para el modo single $query = "select * from procesodos where folio=(select id from registros where fup='$fup' and activo is true) ;";
       //$query="select a.* ,(select especialista from geo_lt where fup='$fup')
               // from procesodos as a 
               // where a.folio=(select id from registros where fup='$fup' and activo is true)";
 
-      // dualidad $query="select a.* ,(select concat(b.nombre,' ',b.apep, ' ', b.apem) as especialista from geo_lt as a join especialistas as b on CAST(a.especialista as INT)=b.id where a.fup='$fup')
-      //         from procesodos as a 
-      //         where a.folio=(select id from registros where fup='$fup' and activo is true)";
+      $query="select a.* ,(select concat(b.nombre,' ',b.apep, ' ', b.apem) as especialista from geo_lt as a join especialistas as b on CAST(a.especialista as INT)=b.id where a.fup='$fup')
+              from procesodos as a 
+              where a.folio=(select id from registros where fup='$fup' and activo is true)";
 
       $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
      
@@ -869,19 +869,19 @@ class Controllermaster {
 
   public function calcularAnticipo($c,$supInicial){ 
 
-    if ($supInicial >= 1 && $supInicial <= 2500) {
+    if ($supInicial >= 1 && $supInicial < 2501) {
         $rango = 1;
     }
 
-    if ($supInicial >= 2501 && $supInicial <= 5000) {
+    if ($supInicial >= 2501 && $supInicial < 5001) {
         $rango = 2;
     }
 
-    if ($supInicial >= 5001 && $supInicial <= 20000) {
+    if ($supInicial >= 5001 && $supInicial < 20001) {
         $rango = 3;
     }
 
-    if ($supInicial >= 20001 && $supInicial <= 100000) {
+    if ($supInicial >= 20001 && $supInicial < 100001) {
         $rango = 4;
     }
 

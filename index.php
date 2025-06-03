@@ -186,7 +186,7 @@ if (isset($_SESSION['id_userAg'])) { ///////validar que vista se debe ver si la 
 				<div class="row align-items-center justify-content-between">
 					<div class="col-lg-6">
 						<div class="copyright">
-						 <p style="font-size: small;">Copyright &copy;, IGECEM. Versión 2.0</p>
+						 <p style="font-size: small;">Copyright &copy;, IGECEM. Versión 2.2</p>
 						</div>
 					</div>
 				</div>

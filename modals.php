@@ -51,9 +51,9 @@
 	  					<select name="areaProduc" id="areaProduc" style="width:80%;">
 	  						<option value="0" selected="" hidden="">Seleccionar</option>
 	  						<option value="Geografia">Dir. Geografia</option>
-	  						<?php // dualidad if($brigada){ ?>
+	  						<?php if($brigada){ ?>
 	  						<option value="Brigada">Brigada delegación</option>
-	  						<?php // dualidad } ?>
+	  						<?php } ?>
 						</select><br>
 					</div>
 	        	</div>
@@ -68,7 +68,7 @@
 
 
 <!-- NOTIFIACIÓN A COLINDANTES -->
-<!-- dualidad <div class="modal fade" id="modal_notificacion" role="dialog">
+<div class="modal fade" id="modal_notificacion" role="dialog">
     <div class="modal-dialog">
 	    <div class="modal-content">
 	    	<div class="modal-header">
@@ -117,59 +117,8 @@
 	        </div>		    	
 	    </div>      
     </div>
-</div> dualidad -->
-<!-- NOTIFIACIÓN A COLINDANTES -->
-<div class="modal fade" id="modal_notificacion" role="dialog">
-    <div class="modal-dialog">
-    	<!-- Modal content-->
-	    <div class="modal-content">
-	    	<div class="modal-header">
-	        	 <h5 class="modal-title">NOTIFICACIÓN A COLINDANTES</h5>
-	        	 <br>
-	             <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        </div>
-	        <div class="modal-body">	        	
-	        	<div id="fechaNotificacionn" style="display: block;">
-	        		<!-- <br>
-	        		<div class="row">
-	        			<div class="col-md-6">
-	        				<label>Fecha programada del levantamiento</label>
-	        			</div>
-	        			<div class="col-md-6">
-	        				<input type="date" name="fecha_lev" id="fecha_lev" readonly="" >
-	        			</div>
+</div> 
 
-	        			<div class="col-md-6">
-	        				<label>Especialista asignada(o)</label>
-	        			</div>
-	        			<div class="col-md-6">
-	        				<input class="form-control" type="text" name="esp_lev" id="esp_lev" readonly="" >
-	        			</div>
-	        		</div> -->
-	        		<br>
-	        		<div class="row">
-	        			<div class="col-md-6">
-	        				<label>Ingresar fecha de notificación</label>
-	        			</div>
-	        			<div class="col-md-6">
-	        				<input type="date" name="fechanotif" id="fechanotif" min="2024-03-19" max="2026-03-15" >
-	        			</div>
-	        		</div>	
-	        		<br>
-	        		<div class="row" align="right">
-	        			<div class="col-md-6">
-	        				<a class="btn btn-main btn-round-full" style="width:200px;" onclick="fechaNotificacionCo_2();" data-toggle="modal" data-target="#registroBien">Guardar</a>
-	        			</div>
-	        			<div class="col-md-6">
-	        				<a class="btn btn-main btn-round-full" style="width:200px;" onclick="fechaNotificacionCo();" data-toggle="modal" data-target="#procesoTerminado">Terminar proceso</a>
-	        			</div>
-	        		</div>
-	        		<br>
-				</div>
-	        </div>		    	
-	    </div>      
-    </div>
-</div>
 
 <!-- LEVANTAMIENTO REALIZADO -->
 <div class="modal fade" id="procesoCuatroInfo" role="dialog">
@@ -198,7 +147,7 @@
 				</div>
 			</div>
 		<div class="modal-footer">
-		  <!-- dualidad <button type="button" class="btn btn-primary" onclick="terminarProcesoCuatro();">Continuar</button> -->
+		  <button type="button" class="btn btn-primary" onclick="terminarProcesoCuatro();">Continuar</button>
 		  <button type="button" class="btn btn-main btn-round-full" style="width:200px;" onclick="terminarProcesoCuatro();">Guardar</button>
 		</div>
 		</div>
@@ -285,9 +234,9 @@
 				<div class="col-md-5"><label>Superficie final (M2):</label></div>
 				<div class="col-md-7">
 					<div id="superficieResult2" name="superficieResult2" >
-						<!-- dualidad <input type="text" onkeyup="this.value=validarSuperficie_er(this.value); CalcularCostoTotal();" onload="CalcularCostoTotal();" 
+						<input type="text" onkeyup="this.value=validarSuperficie_er(this.value); CalcularCostoTotal();" onload="CalcularCostoTotal();" 
 							name="superficieResultante" id="superficieResultante" 
-							style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 140px;" readonly=""><br><br> -->
+							style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 140px;" readonly=""><br><br>
 						<input type="text" onkeyup="this.value=validarSuperficie_er(this.value); manda_calcularCostoTotal();" onload="//CalcularCostoTotal();" 
 							name="superficieResultante" id="superficieResultante" 
 							style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 140px;" ><br><br>
