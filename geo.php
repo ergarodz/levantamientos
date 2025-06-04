@@ -97,10 +97,12 @@
 		<section>
 			<div align="center">
 				<br><br>
-				<div class="row">
-					<div class="col-md-2" >
+				<div class="row" >
+					<div class="col-md-2">
 						<br>
 						<button class="btn btn-default" type="button" onclick="div_carga(1);" style="font-size:11pt;">Registrar salida</button>
+						<br><br>
+						<button class="btn btn-default" type="button" onclick="div_carga(5);" style="font-size:11pt;">En Campo</button>
 						<br><br>
 						<button class="btn btn-default" type="button" onclick="div_carga(2);" style="font-size:11pt;">Registrar entrega</button>
 						<br><br><br><br><br>

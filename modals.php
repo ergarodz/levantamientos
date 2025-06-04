@@ -67,7 +67,7 @@
 </div>
 
 
-<!-- NOTIFIACIÓN A COLINDANTES -->
+<!-- NOTIFICACIÓN A COLINDANTES -->
 <div class="modal fade" id="modal_notificacion" role="dialog">
     <div class="modal-dialog">
 	    <div class="modal-content">
@@ -106,10 +106,10 @@
 	        		<br>
 	        		<div class="row" align="right">
 	        			<div class="col-md-6">
-	        				<a class="btn btn-main btn-round-full" onclick="fechaNotificacionCo_2();" data-toggle="modal" data-target="#registroBien">Guardar</a>
+	        				<a class="btn btn-main btn-round-full" style="width:200px;" onclick="fechaNotificacionCo_2();" data-toggle="modal" data-target="#registroBien">Guardar</a>
 	        			</div>
 	        			<div class="col-md-6">
-	        				<a class="btn btn-main btn-round-full" onclick="fechaNotificacionCo();" data-toggle="modal" data-target="#procesoTerminado">Terminar proceso</a>
+	        				<a class="btn btn-main btn-round-full" style="width:200px;" onclick="fechaNotificacionCo();" data-toggle="modal" data-target="#procesoTerminado">Terminar proceso</a>
 	        			</div>
 	        		</div>
 	        		<br>
@@ -134,21 +134,21 @@
 				<div class="row">					
 			  		<div class="col-md-5"><label>Fecha de levantamiento:</label></div>
 			  		<div class="col-md-7">
-			  			<input type="date" name="fechaentregaGeo" id="fechaentregaGeo" style="border-left: none; border-right: none; border-top: none; margin-top: -30px;" min="2024-03-19" max="2026-03-15" ><br><br>
+			  			<input type="date" name="fechaentregaGeo" id="fechaentregaGeo" readonly style="border-left: none; border-right: none; border-top: none; margin-top: -30px;" min="2024-03-19" max="2026-03-15" ><br><br>
 			  		</div>
 			      	<div class="col-md-5"><label>Folio GEO :</label></div>
 				    <div class="col-md-5">
-				    	<input type="text" name="identificadorGeo" id="identificadorGeo" style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 40px;" value="GEO" maxlength="4"><label>/</label>
+				    	<!-- <input type="text" name="identificadorGeo" id="identificadorGeo" style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 40px;" value="GEO" maxlength="4"><label>/</label>
 				    	<input type="text" name="folGeo" id="folGeo" style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 40px;" maxlength="4"><label>/</label>
-				    	<input type="text" name="anioGeo" id="anioGeo" style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 40px;" value="<?php echo $anio = date('Y');?>" maxlength="4"><br><br> 
+				    	<input type="text" name="anioGeo" id="anioGeo" style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 40px;" value="<?php echo $anio = date('Y');?>" maxlength="4"><br><br>  -->
 
-				    	<!-- <input type="text" name="folio_geo" id="folio_geo" class="form-control" readonly=""> -->
+				    	<input type="text" name="folio_geo" id="folio_geo" class="form-control" readonly="">
 				    </div>
 				</div>
 			</div>
 		<div class="modal-footer">
-		  <button type="button" class="btn btn-primary" onclick="terminarProcesoCuatro();">Continuar</button>
-		  <button type="button" class="btn btn-main btn-round-full" style="width:200px;" onclick="terminarProcesoCuatro();">Guardar</button>
+		  <button type="button" class="btn btn-main btn-round-full" style="width:200px;" onclick="terminarProcesoCuatro();">Continuar</button>
+		  <!-- <button type="button" class="btn btn-main btn-round-full" style="width:200px;" onclick="terminarProcesoCuatro();">Guardar</button> -->
 		</div>
 		</div>
 	</div>
@@ -237,9 +237,9 @@
 						<input type="text" onkeyup="this.value=validarSuperficie_er(this.value); CalcularCostoTotal();" onload="CalcularCostoTotal();" 
 							name="superficieResultante" id="superficieResultante" 
 							style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 140px;" readonly=""><br><br>
-						<input type="text" onkeyup="this.value=validarSuperficie_er(this.value); manda_calcularCostoTotal();" onload="//CalcularCostoTotal();" 
+						<!-- <input type="text" onkeyup="this.value=validarSuperficie_er(this.value); manda_calcularCostoTotal();" onload="//CalcularCostoTotal();" 
 							name="superficieResultante" id="superficieResultante" 
-							style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 140px;" ><br><br>
+							style="border-left: none; border-right: none; border-top: none; margin-top: -30px; width: 140px;" ><br><br> -->
 					</div>
 				</div>
 				<div class="col-md-12" id="mensajeErrorSuperficie2" style="display: none;">
