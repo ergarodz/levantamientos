@@ -42,8 +42,8 @@ function div_carga(op){
 		$("#div_carga").load('geo_lt_entrega.php');
 	}else if(op==3){
 		$("#div_carga").load('lt_concluidos.php');
-	}else if(op==4){
-		$("#div_carga").load('lt_reportes.php');
+	}else if(op==4){////se quitó la opción del menú
+		//$("#div_carga").load('lt_reportes.php');
 	}	
 	else if(op==5){
 		$("#div_carga").load('geo_lt_campo.php');

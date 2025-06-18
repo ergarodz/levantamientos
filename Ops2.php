@@ -47,6 +47,23 @@
                 echo json_encode($op->get_equipo($_REQUEST['inventario']) );
             break;
 
+
+            case 'guardar_dia_lt':
+                echo json_encode($op->guardar_dia_lt( $_REQUEST['fup'], $_REQUEST['fecha'] ) );
+            break;
+
+            case 'save_cambio_especialista':
+                echo json_encode( $op->save_cambio_especialista( $_REQUEST['fup'], $_REQUEST['especialista'], $_REQUEST['motivo'] ) );
+            break;
+
+            case 'save_cambio_fecha_levantamiento':
+                echo json_encode( $op->save_cambio_fecha_levantamiento( $_REQUEST['fup'], $_REQUEST['fecha'], $_REQUEST['motivo'] ) );
+            break;
+
+            case 'cancelar_levantamiento_geo':
+                echo json_encode( $op->cancelar_levantamiento_geo( $_REQUEST['fup'] ) );
+            break;
+
         }
     }
 
@@ -57,6 +74,60 @@
         public function __construct() {
             require_once 'bd/db.php';
             $this->db= Conectar::conexion();
+        }
+
+        public function cancelar_levantamiento_geo($fup){
+            $sql1='INSERT INTO cancelados_geo(fup, fecha_cancelado) VALUES (?, ?);';
+            $query1=$this->db->prepare($sql1);
+            $fecha_cancelado = date("Y-m-d H:i:s");
+            if( $query1->execute([$fup, $fecha_cancelado]) ){
+
+                //// hace el update en la tabla registro, va cancelado etapa 3
+                $sql2='UPDATE registros SET cancelado=3, fechacancelacion=? WHERE fup=? and activo is true;';
+                $query2=$this->db->prepare($sql2);
+                if( $query2->execute([$fecha_cancelado, $fup]) ){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+
+        public function is_levantamiento_cancelado($fup){
+            $sql='select count(id) as tot from cancelados_geo where fup=?;';
+            $query=$this->db->prepare($sql);
+            $query->execute([$fup]);
+            $total=$query->fetch(PDO::FETCH_OBJ)->tot;
+
+            if($total>0){
+                return true;///el levantamiento ya fue cancelado
+            }else{
+                return false;///el levantamiento no ha sido cancelado
+            }
+        }
+
+        public function guardar_dia_lt($fup, $fecha){
+            $sql1='select count(id) as tot from dias_agregados where fup=? ;';
+            $query1=$this->db->prepare($sql1);
+            $query1->execute([$fup]);
+            $total=$query1->fetch(PDO::FETCH_OBJ)->tot;
+
+
+            $fecha = date("Y-m-d H:i:s", strtotime($fecha));
+            $sql='INSERT INTO dias_agregados(fup, num_dia, fecha_agregada) VALUES (?, ?, ?);';
+            $query=$this->db->prepare($sql);
+            if( $query->execute([ $fup, $total+1, $fecha ]) ){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        public function get_dias_agregados($fup){
+            $sql='select * from dias_agregados where fup=? order by num_dia asc;';
+            $query=$this->db->prepare($sql);
+            $query->execute([$fup]);
+            return $query->fetchAll(PDO::FETCH_OBJ);
         }
 
         public function get_all_regs(){
@@ -73,6 +144,13 @@
             $sql='select * from procesodos where folio=? ;';
             $query=$this->db->prepare($sql);
             $query->execute([$id]);
+            return $query->fetch(PDO::FETCH_OBJ);
+        }
+
+        public function get_regs_procesodos_with_fup($fup){
+            $sql='select * from procesodos where folio=(select id from registros where fup=? and activo is true and cancelado=0);';
+            $query=$this->db->prepare($sql);
+            $query->execute([$fup]);
             return $query->fetch(PDO::FETCH_OBJ);
         }
 
@@ -155,6 +233,7 @@
             return $query->fetchAll(PDO::FETCH_OBJ);
         }
 
+
         public function get_reg_proceso3($id){
             $sql='select a.*, b.* from registros as a
                 join procesodos as b on a.id=b.folio
@@ -177,6 +256,60 @@
             $sql='select * from especialistas where id_del=? and activo is true';
             $query=$this->db->prepare($sql);
             $query->execute([ $id_del ]);
+            return $query->fetchAll(PDO::FETCH_OBJ);
+        }
+
+        public function get_especialista_with_fup($fup){
+            $sql='select a.especialista, b.nombre, b.apep, b.apem
+                from geo_lt as a
+                join especialistas as b on CAST(a.especialista as integer) =b.id
+                where a.fup=? ;';
+            $query=$this->db->prepare($sql);
+            $query->execute([$fup]);
+            return $query->fetch(PDO::FETCH_OBJ);
+        }
+
+        public function save_cambio_especialista($fup, $id_especialista, $motivo){
+            $sql1='select count(id) as tot from cambio_especialista where fup=? ;';
+            $query1=$this->db->prepare($sql1);
+            $query1->execute([$fup]);
+            $total=$query1->fetch(PDO::FETCH_OBJ)->tot;
+
+            $sql='INSERT INTO cambio_especialista(fup, especialista_nuevo, num_especialista, motivo, fecha_cambio) VALUES (?, ?, ?, ?, ?) ;';
+            $query=$this->db->prepare($sql);
+            if( $query->execute([ $fup, $id_especialista, $total+1, $motivo, date('Y-m-d H:i:s') ]) ){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        public function save_cambio_fecha_levantamiento($fup, $fecha, $motivo){
+            $sql1='select count(id) as tot from cambio_fecha_levantamiento where fup=? ;';
+            $query1=$this->db->prepare($sql1);
+            $query1->execute([$fup]);
+            $total=$query1->fetch(PDO::FETCH_OBJ)->tot;
+
+            $sql='INSERT INTO cambio_fecha_levantamiento(fup, fecha_nueva, num_fecha, motivo, fecha_cambio) VALUES (?, ?, ?, ?, ?) ;';
+            $query=$this->db->prepare($sql);
+            if( $query->execute([ $fup, $fecha, $total+1, $motivo, date('Y-m-d H:i:s') ]) ){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        public function get_regs_cambio_fecha_levantamiento($fup){
+            $sql='select * from cambio_fecha_levantamiento where fup=? order by num_fecha asc;';
+            $query=$this->db->prepare($sql);
+            $query->execute([$fup]);
+            return $query->fetchAll(PDO::FETCH_OBJ);
+        }
+
+        public function get_especialistas_cambiados($fup){
+            $sql='select * from cambio_especialista as a join especialistas as b on a.especialista_nuevo=b.id where a.fup=? order by a.num_especialista asc;';
+            $query=$this->db->prepare($sql);
+            $query->execute([$fup]);
             return $query->fetchAll(PDO::FETCH_OBJ);
         }
 
@@ -408,17 +541,6 @@
 
 
         public function get_geo_lt(){
-            // $sql='select a.* , b.*, c.*
-            //     from registros as a 
-            //     join geo_lt as b on a.fup=b.fup
-            //     join procesodos as c on a.id=c.folio
-            //     where (a.salida_equipo  is true or a.entrega_equipo is true) and a.activo is true and a.cancelado=0 order by fecha_recepcion desc ;' ;
-            // $sql=' select a.* , b.*, c.*, d.*
-            //     from registros as a 
-            //     join geo_lt as b on a.fup=b.fup
-            //     join procesodos as c on a.id=c.folio
-            //     join estaciones as d on b.inventario=d.inventario
-            //     where (a.salida_equipo  is true or a.entrega_equipo is true) and a.activo is true and a.cancelado=0 order by fecha_recepcion desc';
                 
             $sql='select a.* , b.*, c.*, d.*,e.nombre, e.apep, e.apem
                 from registros as a 
@@ -432,11 +554,6 @@
 
             $deleg=$_SESSION['delegacion'];
             if($deleg!=0){
-                // $sql='select a.* , b.*, c.*
-                //     from registros as a 
-                //     join geo_lt as b on a.fup=b.fup
-                //     join procesodos as c on a.id=c.folio
-                //     where a.iddelegacion='.$deleg.' and (a.salida_equipo  is true or a.entrega_equipo is true) and a.activo is true and a.cancelado=0 order by fecha_recepcion desc ;';
                 $sql='select a.* , b.*, c.*, d.*
                     from registros as a 
                     join geo_lt as b on a.fup=b.fup
