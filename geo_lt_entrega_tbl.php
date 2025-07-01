@@ -1,5 +1,5 @@
 <?php
-	$fup='ERICK';
+	$fup='';
 	if(isset($_REQUEST['fup']) ){
 		$fup=$_REQUEST['fup'];
 	}	
@@ -8,7 +8,16 @@
 		require_once 'Ops2.php';
 		$erick=new Ops2();
 	}	
+
+	/////limitar la seleción de fecha de entrega de equipo, al menos el mismo día de realizacion
+	$reg=$erick->get_regs_procesodos_with_fup($fup);
+	$fecha_min_lt = date('Y-m-d', strtotime($reg->fechalevantamiento )); // Fecha mínima para entrega
+
 ?>
+<script>
+	$("#loader").show();
+</script>
+
 <div id="div_css"></div>
 <br>
 <form id="form_geo_entrega" enctype="multipart/form-data">
@@ -21,7 +30,7 @@
 					<label><b>Fecha y hora de entrega del equipo</b></label>
 				</div>
 				<div class="col-md-8">
-					<input id="fecha_equipo_entrega" name="fecha_equipo_entrega" class="form-control" style="width:55%;" type="datetime-local" required="">
+					<input id="fecha_equipo_entrega" name="fecha_equipo_entrega" class="form-control" style="width:55%;" type="datetime-local" required="" min="<?php echo $fecha_min_lt; ?>T00:00">
 				</div>
 			</div>
 			<br>
@@ -97,4 +106,8 @@
 	        input.value = '';
 	    }
 	});
+</script>
+
+<script>
+    setTimeout(function () { $("#loader").hide(); }, 300); 
 </script>

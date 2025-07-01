@@ -51,49 +51,95 @@ session_start();
             //$this->db=  new PDO("pgsql:host='localhost' dbname=agenda port=5432 user=postgres password=ig3c3m");
         }
 
-        public function lista($id){  
+        // public function lista($id){  
 
-            $sql='SELECT * FROM registros where iddelegacion=? and activo is true and cancelado=0 order by fecha_recepcion desc;;';
+        //     $sql='SELECT * FROM registros where iddelegacion=? and activo is true and cancelado=0 order by fecha_recepcion desc;';
+        //     $query=$this->db->prepare($sql); 
+        //     $query->execute([$id]);
+        //     $res=$query->fetchAll(PDO::FETCH_OBJ);
+        //     return $res;
+        // }
+
+        public function lista($id_del, $fecha_min, $fecha_max){  
+
+            $sql="SELECT * 
+                  FROM registros 
+                  where iddelegacion=? and activo is true and cancelado=0 
+                    and fecha_recepcion<='".$fecha_max."' and fecha_recepcion>='".$fecha_min."' 
+                    order by fecha_recepcion desc;";
             $query=$this->db->prepare($sql); 
-            $query->execute([$id]);
-            //  $res=$query->fetch(PDO::FETCH_OBJ);
+            $query->execute([$id_del]);
             $res=$query->fetchAll(PDO::FETCH_OBJ);
             return $res;
         }
 
-        public function lista2($id){  
-            $sql='SELECT * FROM registros where activo is true and cancelado=0 ';
+        public function lista2($fecha_min, $fecha_max){  ////la usa el admin, por eso no distingue id_del
+            $sql="SELECT * FROM registros where activo is true and cancelado=0 
+                and fecha_recepcion<='".$fecha_max."' and fecha_recepcion>='".$fecha_min."' 
+                order by fecha_recepcion desc;";
             $query=$this->db->prepare($sql); 
             $query->execute();
-          //  $res=$query->fetch(PDO::FETCH_OBJ);
             $res=$query->fetchAll(PDO::FETCH_OBJ);
             return $res;
         }  
 
-        public function get_registros_admin($anio, $id_deleg){
+        // public function lista2($id){  
+        //     $sql="SELECT * FROM registros where activo is true and cancelado=0 ; ";
+        //     $query=$this->db->prepare($sql); 
+        //     $query->execute();
+        //     $res=$query->fetchAll(PDO::FETCH_OBJ);
+        //     return $res;
+        // }  
+
+        public function get_registros_admin($id_deleg, $fecha_min, $fecha_max ){
             switch ($id_deleg) {
-                case '0':
-                    $sql='select * from registros 
-                            where activo is true  
-                            and extract(year from fecha_recepcion)=? 
-                            order by fecha_recepcion desc';
+                case '0': ////opcion para obtener todos
+                    $sql="select * from registros 
+                            where activo is true and cancelado=0
+                            and fecha_recepcion<='".$fecha_max."' and fecha_recepcion>='".$fecha_min."'
+                            order by fecha_recepcion desc";
                     $query=$this->db->prepare($sql);
-                    $query->execute([ $anio ]);
+                    $query->execute();
                     break;
                 
-                default:
-                    $sql='select * from registros 
-                            where activo is true and iddelegacion=? 
-                            and extract(year from fecha_recepcion)=? 
-                            order by fecha_recepcion desc';
+                default: /////opcion para obtener una delegacion
+                    $sql="select * from registros 
+                            where activo is true and iddelegacion=? and cancelado=0
+                            and fecha_recepcion<='".$fecha_max."' and fecha_recepcion>='".$fecha_min."'
+                            order by fecha_recepcion desc";
                     $query=$this->db->prepare($sql);
-                    $query->execute([ $id_deleg, $anio ]);
+                    $query->execute([ $id_deleg ]);
                     break;
             }
                     
                     
             return $query->fetchAll(PDO::FETCH_OBJ);
         }
+
+        // public function get_registros_admin($anio, $id_deleg){
+        //     switch ($id_deleg) {
+        //         case '0': ////opcion para obtener todos
+        //             $sql='select * from registros 
+        //                     where activo is true  
+        //                     and extract(year from fecha_recepcion)=? 
+        //                     order by fecha_recepcion desc';
+        //             $query=$this->db->prepare($sql);
+        //             $query->execute([ $anio ]);
+        //             break;
+                
+        //         default: /////opcion para obtener una delegacion
+        //             $sql='select * from registros 
+        //                     where activo is true and iddelegacion=? 
+        //                     and extract(year from fecha_recepcion)=? 
+        //                     order by fecha_recepcion desc';
+        //             $query=$this->db->prepare($sql);
+        //             $query->execute([ $id_deleg, $anio ]);
+        //             break;
+        //     }
+                    
+                    
+        //     return $query->fetchAll(PDO::FETCH_OBJ);
+        // }
 
         public function get_anios_recepcion(){
             $sql='select distinct extract(year from fecha_recepcion) as anio from registros
@@ -193,6 +239,86 @@ session_start();
 
         //     return $TotalDeDias;
         // }
+
+
+        /////inicio y fin son las fechas del levantamiento, fecha_inicio y fecha_fin son las fechas entre las que va buscar días no laborales
+        public function dias_transcurridos($inicio, $fin, $fecha_inicio, $fecha_fin) {
+
+            $start1 = new DateTime($inicio);
+            $end1 = new DateTime($fin);
+        
+            $intecheck = $end1->diff($start1);
+
+            if($intecheck->invert == 1){
+
+                $start = new DateTime($inicio);
+                $end = new DateTime($fin);
+
+            }else{
+
+                $start = new DateTime($fin);
+                $end = new DateTime($inicio);
+            }
+
+            //de lo contrario, se excluye la fecha de finalización ()
+            $end->modify('+1 day');
+            $interval = $end->diff($start);
+            
+            // total dias
+            $days = $interval->days;
+
+            // crea un período de fecha iterable (P1D equivale a 1 día)
+            $period = new DatePeriod($start, new DateInterval('P1D'), $end);
+
+
+            // almacenado como matriz, por lo que puede agregar más de una fecha feriada
+            $diasFeriados = self::getDaysModel($fecha_inicio, $fecha_fin);
+            $holidays = array();
+
+            foreach ($diasFeriados as  $value) {
+
+                if ($value->fecha_inicio == $value->fecha_fin) {
+                    $fecha = new DateTime($value->fecha_inicio);
+                    array_push($holidays, $fecha->format('Y-m-d'));
+                } else {
+                    $start = new DateTime($value->fecha_inicio);
+                    $end = new DateTime($value->fecha_fin);
+                    $end->modify('+1 day');
+                    $interval = $end->diff($start);
+                    $perio2 = new DatePeriod($start, new DateInterval('P1D'), $end);
+                    foreach ($perio2 as $date) {
+                        array_push($holidays, $date->format('Y-m-d'));
+                    }
+                }
+            }
+
+            $resta = 0;
+            foreach ($period as $dt) {
+                $curr = $dt->format('D');
+                // obtiene si es Sábado o Domingo
+                if ($curr == 'Sat' || $curr == 'Sun') {
+                    $days--;
+                    $resta++;
+                } elseif (in_array($dt->format('Y-m-d'), $holidays)) {
+                    $days--;
+                    $resta++;
+                }
+            }
+
+            if($intecheck->invert == 1){
+                return  $days;
+            }else{
+                return  $days * -1;
+            }
+            
+        } 
+
+        public function  getDaysModel($fecha_inicio, $fecha_fin){
+            $sql="SELECT * FROM dias_no_laborales where fecha_inicio>='".$fecha_inicio."' and fecha_fin<='".$fecha_fin."' ;";
+            $query=$this->db->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_OBJ);
+        }
  
     }
 ?>    

@@ -37,6 +37,7 @@ if (isset($_SESSION['id_userAg'])) { ///////validar que vista se debe ver si la 
   <link rel="stylesheet" href="css/style.css">
 
   <link rel="stylesheet" href="css/headerAndFooter.css">
+  <link href="css/loader.css" rel="stylesheet" type="text/css" />
 
   <!-- 
     Essential Scripts
@@ -56,6 +57,11 @@ if (isset($_SESSION['id_userAg'])) { ///////validar que vista se debe ver si la 
 
 </head>
 <body>
+	<!-- Loader Overlay -->
+	<div id="loader">
+		<div id="loader-spinner"></div>
+	</div>
+
 	<?php require_once 'header.php';?>
 	<section class="section about">
 		<div class="container">

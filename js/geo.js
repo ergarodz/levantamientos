@@ -36,23 +36,45 @@ function recortaDecimales1(cadena){
 
 
 function div_carga(op){
-	if(op==1){
-		$("#div_carga").load('geo_lt_salida.php');
-	}else if(op==2){
-		$("#div_carga").load('geo_lt_entrega.php');
-	}else if(op==3){
-		$("#div_carga").load('lt_concluidos.php');
+	if(op==1){////registrar salida
+		$("#loader").show();
+		setTimeout(function () {
+			$("#loader").hide();
+			$("#div_carga").load('geo_lt_salida.php');			
+		}, 300);		
+
+	}else if(op==2){////registra entrega
+		$("#loader").show();
+		setTimeout(function () {
+			$("#loader").hide();
+			$("#div_carga").load('geo_lt_entrega.php');
+		}, 300);
+	}else if(op==3){/////levantamientos topográficos
+		$("#loader").show();
+		setTimeout(function () {
+			$("#loader").hide();
+			$("#div_carga").load('lt_concluidos.php');
+		}, 300);
 	}else if(op==4){////se quitó la opción del menú
 		//$("#div_carga").load('lt_reportes.php');
 	}	
-	else if(op==5){
-		$("#div_carga").load('geo_lt_campo.php');
+	else if(op==5){/////en campo
+		$("#loader").show();
+		setTimeout(function () {
+			$("#loader").hide();
+			$("#div_carga").load('geo_lt_campo.php');
+		}, 300);
 	}	
 }
 
 function carga_info_salida(){
 	var fup=$("#fup").val();
-	$("#info_salida").load('geo_lt_salida_tbl.php?fup='+fup);
+
+	$("#loader").show();
+	setTimeout(function () {
+		$("#loader").hide();
+		$("#info_salida").load('geo_lt_salida_tbl.php?fup='+fup);
+	}, 300);
 }
 
 function guardar_equipo_salida(usuario_envio){
@@ -87,12 +109,10 @@ function guardar_equipo_salida(usuario_envio){
             type:'post',
             data:$("#form_geo_salida").serialize(),
             dataType:'json',
-            // beforeSend:function(){$("#loader").modal('show');},
-            // complete:function(){$("#loader").modal('hide');},
+            beforeSend:function(){$("#loader").show();},
+            //complete:function(){$("#loader").hide();},
             success:function(a){
             	if(a){
-
-
 
             		///se realiza envío de correo
 				    correo_destino='erick.garcia.rdz@hotmail.com'; //alert(correo_destino);
@@ -115,6 +135,7 @@ function guardar_equipo_salida(usuario_envio){
 				    				success:function(w){
 				    					//alert(w);
 				    					if(w==true){
+											$("#loader").hide();
 				    						//alert('Correo enviado a'+correo_destino);
 				    						$("#titulo_modal_ok").html('Registro correcto');
 											$("#mensaje_modal_ok").html('Información guardada correctamente');
@@ -123,12 +144,14 @@ function guardar_equipo_salida(usuario_envio){
 											////recargamos el select de los folios
 						            		$("#div_carga").load('geo_lt_salida.php');
 				    					}else{
+											$("#loader").hide();
 				    						alert('Fallo en el envío del correo');
 				    					}
 				    				}
 				    			});
 
 				    		}else{
+								$("#loader").hide();
 				    			alert('Error al guardar información del correo en la BD');
 				    		}
 				    	}
@@ -145,6 +168,7 @@ function guardar_equipo_salida(usuario_envio){
      				//$("#div_carga").load('geo_lt_salida.php');
 
             	}else{
+					$("#loader").hide();
             		$("#titulo_modal_ad").html('ERROR');
 					$("#mensaje_modal_ad").html('Error en guardado');
 					$("#modal_mensaje_ad").modal('show');
@@ -174,6 +198,8 @@ function guardar_equipo_entrega(){
 		//alert('Faltan campos');
 		$("#div_css").html('<style type="text/css"> input:invalid {   border: 2px solid red;  }</style>');
 	}else{////GUARDADO
+		$("#loader").show();
+
 		$("#div_css").html('');
 		///aqui validamos los campos
 		iscrudo=document.getElementById('iscrudo').checked;///valores de true and false
@@ -206,6 +232,8 @@ function guardar_equipo_entrega(){
 					    	success:function(c){
 					    		//alert(c);
 					    		if(c==true){
+
+									$("#loader").hide();
 					    			$("#titulo_modal_ok").html('Registro correcto');
 									$("#mensaje_modal_ok").html('Levantamiento concluido correctamente');
 									$("#modal_mensaje_ok").modal('show');
@@ -229,6 +257,8 @@ function guardar_equipo_entrega(){
 	            success:function(a){
 	            	//alert(a);
 	            	if(a==true){
+						$("#loader").hide();
+						
 	            		$("#titulo_modal_ok").html('Registro correcto');
 						$("#mensaje_modal_ok").html('Levantamiento concluido correctamente');
 						$("#modal_mensaje_ok").modal('show');

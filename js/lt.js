@@ -93,6 +93,21 @@ function recortaDecimales(cadena){
 
 
 function prueba_guardar(){  
+  $("#loader").show();
+
+  ////quitamos todos los mensajes de error al inicio
+  $("#mensajeErrorNul").hide();
+  $("#message").hide();
+  $("#errorccat").hide();
+  $("#mensajeErrorNul").hide(); 
+  $("#mensaje_error_fecha_recepcion").hide();
+  $("#message2").hide();
+  $("#mensajeErrorSuperficie").hide();
+  $("#mensajeErrorFupExistente").hide();  
+  $("#mensajeErrorGuardar").hide();
+
+  ///se procede normalmente a validar el guardado
+
   isok=validar_radio_clave_catastral();
   nombreSo=$("#nombreSo").val(); apaterno=$("#aPaterno").val(); amaterno=$("#aMaterno").val();
   fechaRecepcion=$("#fecha").val();
@@ -199,6 +214,8 @@ function prueba_guardar(){
       $("#mensajeErrorNul").show(); 
     }
   } 
+
+  setTimeout(function () { $("#loader").hide(); }, 200); 
 
 }
 

@@ -57,7 +57,7 @@
             break;
 
             case 'save_cambio_fecha_levantamiento':
-                echo json_encode( $op->save_cambio_fecha_levantamiento( $_REQUEST['fup'], $_REQUEST['fecha'], $_REQUEST['motivo'] ) );
+                echo json_encode( $op->save_cambio_fecha_levantamiento( $_REQUEST['fup'], $_REQUEST['fecha'], $_REQUEST['motivo'], $_REQUEST['fecha_original'] ) );
             break;
 
             case 'cancelar_levantamiento_geo':
@@ -82,8 +82,8 @@
             $fecha_cancelado = date("Y-m-d H:i:s");
             if( $query1->execute([$fup, $fecha_cancelado]) ){
 
-                //// hace el update en la tabla registro, va cancelado etapa 3
-                $sql2='UPDATE registros SET cancelado=3, fechacancelacion=? WHERE fup=? and activo is true;';
+                //// hace el update en la tabla registro, va cancelado etapa 2
+                $sql2='UPDATE registros SET cancelado=2, fechacancelacion=? WHERE fup=? and activo is true;';
                 $query2=$this->db->prepare($sql2);
                 if( $query2->execute([$fecha_cancelado, $fup]) ){
                     return true;
@@ -105,6 +105,14 @@
                 return false;///el levantamiento no ha sido cancelado
             }
         }
+
+        public function get_lt_cancelados_geo(){
+            $sql='select * from cancelados_geo order by fecha_cancelado desc;';
+            $query=$this->db->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_OBJ);
+        }
+
 
         public function guardar_dia_lt($fup, $fecha){
             $sql1='select count(id) as tot from dias_agregados where fup=? ;';
@@ -220,12 +228,12 @@
             // $sql='select a.* from registros as a
             //     where a.proceso=2 and a.activo is true and salida_equipo is true and entrega_equipo is false order by fecha_recepcion desc;';
             $sql='select a.*,b.areaproduc from registros as a join procesodos as b on a.id=b.folio 
-                where a.proceso=3 and a.activo is true and salida_equipo is true and entrega_equipo is false order by fecha_recepcion desc;';
+                where a.proceso=3 and cancelado=0 and a.activo is true and salida_equipo is true and entrega_equipo is false order by fecha_recepcion desc;';
 
             $deleg=$_SESSION['delegacion'];
             if($deleg!=0){
                 $sql='select a.*,b.areaproduc from registros as a join procesodos as b on a.id=b.folio 
-                where a.proceso=3 and a.activo is true and salida_equipo is true and entrega_equipo is false and iddelegacion='.$deleg.' order by fecha_recepcion desc;'; 
+                where a.proceso=3 and cancelado=0 and a.activo is true and salida_equipo is true and entrega_equipo is false and iddelegacion='.$deleg.' order by fecha_recepcion desc;'; 
             }
 
             $query=$this->db->prepare($sql); 
@@ -284,16 +292,30 @@
             }
         }
 
-        public function save_cambio_fecha_levantamiento($fup, $fecha, $motivo){
+        public function save_cambio_fecha_levantamiento($fup, $fecha, $motivo, $fecha_original){
             $sql1='select count(id) as tot from cambio_fecha_levantamiento where fup=? ;';
             $query1=$this->db->prepare($sql1);
             $query1->execute([$fup]);
             $total=$query1->fetch(PDO::FETCH_OBJ)->tot;
+            if($total==0){///si es la primera vez que se cambia la fecha de levantamiento, se guarda la primera fecha 
+                $sql="INSERT INTO cambio_fecha_levantamiento(fup, fecha_nueva, num_fecha, motivo, fecha_cambio) VALUES (?, ?, ?, ?, ?) ;";
+                $query=$this->db->prepare($sql);
+                $query->execute([ $fup, $fecha_original, $total, '', date('Y-m-d H:i:s') ]);
+            }
+            
 
             $sql='INSERT INTO cambio_fecha_levantamiento(fup, fecha_nueva, num_fecha, motivo, fecha_cambio) VALUES (?, ?, ?, ?, ?) ;';
             $query=$this->db->prepare($sql);
             if( $query->execute([ $fup, $fecha, $total+1, $motivo, date('Y-m-d H:i:s') ]) ){
-                return true;
+
+                ////se actualiza la tabla procesodos cada que se cambie el día, para que los reportes coincidan
+                $sql2='UPDATE procesodos  SET fechalevantamiento=? WHERE folio in ( SELECT id from registros where activo is true and cancelado=0 and fup=? );';
+                $query2=$this->db->prepare($sql2);
+                if( $query2->execute([ $fecha, $fup ]) ){
+                    return true;
+                }else{
+                    return false;
+                }
             }else{
                 return false;
             }
@@ -314,7 +336,8 @@
         }
 
         public function get_equipos($id_del){
-            $sql='select * from estaciones where id_del=? and activo is true order by id asc;';
+            //$sql='select * from estaciones where id_del=? and activo is true order by id asc;';
+            $sql='select * from estaciones where id_del=? order by id asc;';
             $query=$this->db->prepare($sql);
             $query->execute([ $id_del ]);
             return $query->fetchAll(PDO::FETCH_OBJ);
@@ -554,13 +577,84 @@
 
             $deleg=$_SESSION['delegacion'];
             if($deleg!=0){
-                $sql='select a.* , b.*, c.*, d.*
+                $sql='select a.* , b.*, c.*, d.*,e.nombre, e.apep, e.apem
                     from registros as a 
                     join geo_lt as b on a.fup=b.fup
                     join procesodos as c on a.id=c.folio
                     join estaciones as d on d.inventario=b.inventario
-                    where a.iddelegacion=1 and (a.salida_equipo  is true or a.entrega_equipo is true) and a.activo is true and a.cancelado=0 order by fecha_recepcion desc';
+                    join especialistas as e on e.id= CAST(b.especialista as INTEGER)
+                    where a.iddelegacion='.$deleg.'  
+                    and (a.salida_equipo  is true or a.entrega_equipo is true) 
+                    and a.activo is true and a.cancelado=0 order by fecha_recepcion desc';
             }
+            $query=$this->db->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_OBJ);
+        }
+
+        public function get_periodos(){
+            $sql='select * from periodos order by num_periodo desc; ';
+            $query=$this->db->prepare($sql);
+            if( $query->execute() ){
+                return $query->fetchAll(PDO::FETCH_OBJ);
+            }else{
+                return false;
+            }
+        }
+
+        public function get_fechas_periodo($periodo){
+            $sql='select fecha_min, fecha_max from periodos where num_periodo=? ;';
+            $query=$this->db->prepare($sql);
+            $query->execute([ $periodo ]);
+            return $query->fetch(PDO::FETCH_OBJ);            
+        }
+
+        public function get_geo_lt_periodo($periodo){
+            $fechas=self::get_fechas_periodo( $periodo );
+            $fecha_min=$fechas->fecha_min; $fecha_max=$fechas->fecha_max;
+            
+            // switch($periodo){
+            //     case '1':
+            //         //$fecha_min='-';
+            //         $fecha_min='2022-01-01';
+            //         $fecha_max='2024-03-18';
+            //         break;
+            //     case '2':
+            //         $fecha_min='2024-03-19';
+            //         $fecha_max='2025-03-25';
+            //         break;
+            //     case '3':
+            //         $fecha_min='2025-03-26';
+            //         //$fecha_max='-';
+            //         $fecha_max='2027-01-01';
+            //         break;
+            // }
+
+            $sql="select a.* , b.*, c.*, d.*,e.nombre, e.apep, e.apem
+                from registros as a 
+                join geo_lt as b on a.fup=b.fup
+                join procesodos as c on a.id=c.folio
+                join estaciones as d on d.inventario=b.inventario
+                join especialistas as e on e.id= CAST(b.especialista as INTEGER)
+                where a.iddelegacion=1 
+                and fecha_recepcion>='".$fecha_min."' and fecha_recepcion<='".$fecha_max."' 
+                and (a.salida_equipo  is true or a.entrega_equipo is true) 
+                and a.activo is true and a.cancelado=0 order by fecha_recepcion desc";
+
+            $deleg=$_SESSION['delegacion'];
+            if($deleg!=0){
+                $sql="select a.* , b.*, c.*, d.*,e.nombre, e.apep, e.apem
+                    from registros as a 
+                    join geo_lt as b on a.fup=b.fup
+                    join procesodos as c on a.id=c.folio
+                    join estaciones as d on d.inventario=b.inventario
+                    join especialistas as e on e.id= CAST(b.especialista as INTEGER)
+                    where a.iddelegacion=".$deleg." 
+                    and fecha_recepcion>='".$fecha_min."' and fecha_recepcion<='".$fecha_max."'  
+                    and (a.salida_equipo  is true or a.entrega_equipo is true) 
+                    and a.activo is true and a.cancelado=0 order by fecha_recepcion desc";
+            }
+
             $query=$this->db->prepare($sql);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_OBJ);

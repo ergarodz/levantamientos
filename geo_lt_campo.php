@@ -78,6 +78,10 @@
     }
 
     function carga_info_op(opcion){
-        $("#info_op").load("geo_lt_campo_info.php?opcion=" + opcion + "&fup=" + $("#fup").val() );
+        $("#loader").show();
+		setTimeout(function () {
+			$("#loader").hide();
+            $("#info_op").load("geo_lt_campo_info.php?opcion=" + opcion + "&fup=" + $("#fup").val() );
+        }, 400);
     }
 </script>

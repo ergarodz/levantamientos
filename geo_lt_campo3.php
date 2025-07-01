@@ -15,6 +15,9 @@
     $fechalevantamiento=(new DateTime($reg->fechalevantamiento))->format('Y-m-d');
 
     $cambios_de_fecha = $lst->get_regs_cambio_fecha_levantamiento($fup);
+
+    ////si no se han cambiado fechas, se toma la fecha de levantamiento del registro
+    $fechalevantamiento_mas_un_dia = (new DateTime($fechalevantamiento))->modify('+1 day')->format('Y-m-d');
       
 ?>
 
@@ -73,6 +76,9 @@
 
 <script>
     function cambio_fecha_levantamiento(){
+        const fecha_original = $("#fecha_levantamiento").val();
+        //alert(fecha_original);
+
         const fecha= $("#nueva_fechalevantamiento").val();
         if (!fecha) {
             Swal.fire("","Por favor, seleccione una fecha","warning");
@@ -92,7 +98,7 @@
 
         $.ajax({
             url:'Ops2.php',
-            data:{action:'save_cambio_fecha_levantamiento',fup: '<?php echo $fup; ?>', fecha: fecha, motivo: motivo},
+            data:{action:'save_cambio_fecha_levantamiento',fup: '<?php echo $fup; ?>', fecha: fecha, motivo: motivo, fecha_original:fecha_original},
             dataType:'json',
             type:'post',
             success:function(response){

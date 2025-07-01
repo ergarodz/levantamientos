@@ -11,6 +11,7 @@
 
 	$reg=$erick->get_registro($fup);
 	//echo json_encode($reg);
+	$fecha_min_lt = date('Y-m-d', strtotime($reg->fecha_recepcion )); // Fecha mínima para el levantamiento
 
 	///obtener lista de especialistas por delegación
 	$especialistas=$erick->get_especialistas($reg->iddelegacion);
@@ -25,6 +26,9 @@
 	//echo json_encode($equipos);
 
 ?>
+<script>
+	$("#loader").show();
+</script>
 <div id="div_css"></div>
 <br>
 <form id="form_geo_salida">
@@ -62,7 +66,7 @@
 					<label><b>Fecha del levantamiento topográfico</b></label>
 				</div>
 				<div class="col-md-8" align="left">
-					<input id="fecha_lt" name="fecha_lt" type="date" class="form-control" style="width:60%;" required="" />
+					<input id="fecha_lt" name="fecha_lt" type="date" class="form-control" style="width:60%;" required="" min="<?php echo $fecha_min_lt;?>"/>
 				</div>			
 			</div>
 			<!-- <br>
@@ -144,7 +148,7 @@
 					<label><b>Fecha y hora de salida del equipo</b></label>
 				</div>
 				<div class="col-md-8" align="left">
-					<input id="fecha_equipo_salida" name="fecha_equipo_salida" type="datetime-local" class="form-control" style="width:60%;" required="" />
+					<input id="fecha_equipo_salida" name="fecha_equipo_salida" type="datetime-local" class="form-control" style="width:60%;" required="" min="<?php echo $fecha_min_lt; ?>T00:00" />
 				</div>	
 			</div>
 			<!-- <br>
@@ -194,4 +198,8 @@
 	function quitar_contorno(elemento){
 	    $("#"+elemento).removeAttr("style");
 	}
+</script>
+
+<script>
+    setTimeout(function () { $("#loader").hide(); }, 300); 
 </script>

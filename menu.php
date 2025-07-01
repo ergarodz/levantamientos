@@ -24,7 +24,7 @@
 		</div>
         <div class="row" style="background-color: #8a2034;">
             <div class="col-md-3">
-            <p style="text-align:left; color:white; font-size:x-large; margin-top:10px; font-weight:bold;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DELEGACIÓN <?php echo $_SESSION["username"]; ?></p>
+            	<p style="text-align:left; color:white; font-size:x-large; margin-top:10px; font-weight:bold;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DELEGACIÓN <?php echo $_SESSION["username"]; ?></p>
             </div>
             <div class="col-md-6"></div>
             <div class="col-md-1" style="margin-top:10px;"></div>

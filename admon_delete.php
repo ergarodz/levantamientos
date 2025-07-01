@@ -1,12 +1,11 @@
 <?php 
+	if (session_status() == PHP_SESSION_NONE) { session_start(); }
 
-if (session_status() == PHP_SESSION_NONE) { session_start(); }
+	if (!isset($_SESSION["id_userAg"])) {
+		header("Location: index.php");   
+	}
 
-if (!isset($_SESSION["id_userAg"])) {
-    header("Location: index.php");   
-}
-
-$_SESSION["id_userAg"];
+	$_SESSION["id_userAg"];
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +23,8 @@ $_SESSION["id_userAg"];
 
 		<script src="js/script.js"></script>
 		<script src="js/script3.js"></script>
+
+		<link href="css/loader.css" rel="stylesheet" type="text/css" />
 
 		<script type="text/javascript" >
 		  window.location.hash="no-back-button";
@@ -43,6 +44,14 @@ $_SESSION["id_userAg"];
 	    </script>
 	</head>
 	<body id="top">
+
+		<!-- Loader Overlay -->
+		<div id="loader">
+			<div id="loader-spinner"></div>
+		</div>
+		<script>
+			$("#loader").show();
+		</script>
 			  
 		<?php 
 		require_once 'admon_menu.php';
@@ -124,4 +133,8 @@ $_SESSION["id_userAg"];
 			</div>
 		</div>
 	</footer>
+
+	<script>
+		setTimeout(function () { $("#loader").hide(); }, 300); 
+	</script>
 </html>

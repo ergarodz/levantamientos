@@ -17,6 +17,7 @@ $(document).ready(function() {
 });
 
 function login(){
+  $("#loader").show();
   
   var usa = $('#username').val();
   var pwd = $('#passw').val();
@@ -27,8 +28,10 @@ function login(){
   }
 
   if( usa == " " || usa == "" ){
+    setTimeout(function () { $("#loader").hide(); }, 300); 
     swal.fire("Ingresa usuario");
   }else if(pwd == " " || pwd == ""){
+    setTimeout(function () { $("#loader").hide(); }, 300); 
     swal.fire("Ingresa contraseña");
   }else{ 
     $.ajax({
@@ -40,8 +43,10 @@ function login(){
       success:function(yz){
         //alert(yz);
         if(yz=='Error'){
+          setTimeout(function () { $("#loader").hide(); }, 300); 
           swal.fire("Usuario y/o contraseña incorrectos");
         }else{///no hay error, redirige dentro del sistema
+          setTimeout(function () { $("#loader").hide(); }, 300); 
           location.href=yz;
         }
       }

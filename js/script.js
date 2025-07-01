@@ -544,11 +544,13 @@ function buscaRegistro(){
 	var iddelegacion = $("#iddelegacion").val();
 
 	//alert(iddelegacion);
+	
 	$.ajax({
 		url:'acceso/route.php',
 		data:{acceess:96,fup_buscar:fup_buscar,iddelegacion:iddelegacion},///se obtiene la información del folio, se obtiene 100 si no existe
 		dataType:'json',
 		type:'post',
+		beforeSend:function(){ $("#loader").show(); },
 		success:function(yz){
 			if ( yz == 100) {////no existe registro
 				
@@ -578,6 +580,8 @@ function buscaRegistro(){
 					$("#control_proceso").load('proceso.php?proceso='+yz.proceso);///cargamos proceso.php, y este decide que proceso mostrar de acuerdo al proceso
 				}				
 			}
+
+			setTimeout(function () { $("#loader").hide(); }, 300); 
 		}
 	});	
 }
@@ -663,13 +667,13 @@ function mostrarInfo(){
 	var folioRegistro = $("#fol").val();
 
 	$.post("acceso/route.php",{acceess:94,folioRegistro:folioRegistro},function(yz){
-
+		//alert(yz);
  		if (yz != 100 || yz != "100"  ) {
+			//alert('Llega aquí');
  			$(yz).each(function(key,valuee){
+ 				//alert(valuee.fecha_recepcion);
 
- 				//alert(valuee.fechaenvio);
-
- 				$("#ordentrabajo").val(valuee.ordentrabajo);		
+ 				$("#ordentrabajo").val(valuee.ordentrabajo);
 
  				if(valuee.estatusfecha==1 && valuee.fechaenvio!=""){///se verifica que sea la opcion de seleccionar fecha y que hya valor en el date
  					$("#fechaDeEnvio").val( valuee.estatusfecha );

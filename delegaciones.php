@@ -48,11 +48,10 @@
 </head>
 <body id="top">
 
-  <!--loader-->
-  <div id="loader" class="modal fade" style="margin:auto; "></div>
-  <!-- <script type="text/javascript">
-    $("#loader").modal('show');
-  </script> -->
+  <!-- Loader Overlay -->
+	<div id="loader">
+		<div id="loader-spinner"></div>
+	</div>
 
 <?php require_once 'menu.php';?>
 <!-- <header>

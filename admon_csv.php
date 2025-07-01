@@ -25,6 +25,8 @@ $_SESSION["id_userAg"];
 		<script src="js/script.js"></script>
 		<script src="js/script3.js"></script>
 
+		<link href="css/loader.css" rel="stylesheet" type="text/css" />
+
 		<script type="text/javascript" >
 		  window.location.hash="no-back-button";
 		  window.location.hash="Again-No-back-button" //chrome
@@ -60,7 +62,14 @@ $_SESSION["id_userAg"];
 
 	</head>
 	<body id="top">
-		  	
+		
+		<!-- Loader Overlay -->
+		<div id="loader">
+			<div id="loader-spinner"></div>
+		</div>
+		<script>
+			$("#loader").show();
+		</script>
 
 	  	<form action="info_excel.php" method="post" target="_blank" id="FormularioExportacion">
 			<input type="hidden" id="datos_a_enviar" name="datos_a_enviar" value="Exportar a Excel" />
@@ -249,4 +258,8 @@ $_SESSION["id_userAg"];
 			</div>
 		</div>
 	</footer>
+
+	<script>
+		setTimeout(function () { $("#loader").hide(); }, 300); 
+	</script>
 </html>

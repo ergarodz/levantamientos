@@ -43,62 +43,18 @@
 
 	</head>
 
-	<!--loader-->
-    <div id="loader" class="modal fade" style="margin: auto;"></div>
+	<!-- Loader Overlay -->
+	<div id="loader">
+		<div id="loader-spinner"></div>
+	</div>
+
     <!-- <script type="text/javascript">
-    	$("#loader").modal('show');
+    	$('#loader').show();
     </script> -->
 
 	<body id="top">	
 
-		<header>
-			<div class="header-top-bar">
-				<div class="">
-					<div class="row align-items-center" >
-						<div class="col-lg-1"></div>
-						<div class="col-lg-2">
-							<a class="navbar-brand" style="cursor:default;">
-								<img src="images/igecem.png" alt="" class="img-fluid" width="50" height="50"> 
-							</a>
-						</div>
-						
-						<div class="col-lg-6">
-							<p style="font-size: xx-large; text-align: center; cursor:default;"><b>LEVANTAMIENTOS TOPOGRÁFICOS</b></p>
-							<input type="text" name="delegacion" id="delegacion" style="display: none;" value="<?php echo $_SESSION["abrev"]; ?>">
-							<input type="text" name="iddelegacion" id="iddelegacion" style="display: none;" value="<?php echo $_SESSION["id_userAg"]; ?>">
-							<?php 
-								$anio = date('Y');
-			  					$anio2 = substr($anio, -2);
-							?>
-							<input type="hidden" name="anioAct" id="anioAct" value="<?php echo $anio2; ?>">
-						</div>
-						<div class="col-lg-3">
-							
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-12" style="background-color: #8a2034; ">
-		        <div class="row">
-		            <div class="col-md-3"></div>
-		            <div class="col-md-6" style="margin-top:15px;">
-		            	<p style="text-align:center; color:white; font-size:x-large; cursor:default; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $_SESSION["username"]; ?></p>
-		            </div>
-
-					<div class="col-md-1" style="margin-top:15px;"></div>
-
-		            <div class="col-md-1" style="margin-top:15px;">
-		            	<!-- <a href="delegaciones.php" title="Inicio"><i class="icofont-home icofont-2x" style="color: white;"></a></i> -->
-		            	<a href="semaforizacion.php" title="Avance de levantamientos" ><i class="icofont-search-stock icofont-2x" style="color: white;"></i></a>
-		            </div>
-
-		            <div class="col-md-1" style="margin-top:15px;">
-		                <a class="" data-toggle="modal" data-target="#myModal" style="color: white; cursor: pointer;" title="Cerrar Sesión"><i class="icofont-sign-out icofont-2x"></i></a> 
-		            </div>
-		            
-		        </div>
-		    </div>
-		</header>
+		<?php require_once 'admon_menu.php';?>
 		<section>
 			<div align="center">
 				<br><br>
