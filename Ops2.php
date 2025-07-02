@@ -148,6 +148,17 @@
             return $query->fetchAll(PDO::FETCH_OBJ);
         }
 
+        public function get_all_regs_periodo($fecha_min, $fecha_max){
+            $sql='select a.* , b.usuario as nom_delegacion from registros as a 
+                  join usuarios as b on a.iddelegacion=b.id
+                  where a.activo is true and a.cancelado=0
+                  and a.fecha_recepcion >= ? and a.fecha_recepcion <= ? 
+                  order by a.iddelegacion, a.fup desc ;';
+            $query=$this->db->prepare($sql);
+            $query->execute([ $fecha_min, $fecha_max ]);
+            return $query->fetchAll(PDO::FETCH_OBJ);
+        }
+
         public function get_regs_procesodos($id){
             $sql='select * from procesodos where folio=? ;';
             $query=$this->db->prepare($sql);
