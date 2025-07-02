@@ -95,6 +95,7 @@
       <?php require_once 'modals_cerrar.php';?>
       <script>
         function cargar_tbl_fup(){
+          $("#loader").show();
           const periodo=$("#periodo_select").val();
           //alert(periodo);
           $("#tbl_fups").load('tbl_fup.php?periodo='+periodo+'&lista=1');

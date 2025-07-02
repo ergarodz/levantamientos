@@ -50,7 +50,7 @@
     	$fechaRegistro = $c->fecha_recepcion;
     	$fechaFinal = date('Y-m-d');
 
-		
+		$TotalDeDias=0;
 
     	switch ($c->proceso) {
     		case '1':
