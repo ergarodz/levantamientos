@@ -132,6 +132,7 @@ $_SESSION["id_userAg"];
 	<script>
 
 		function cargar_tbl_csv(){
+			$("#loader").show();
 			const periodo=$("#periodo_select").val();
 			$("#tbl_csv").load('tbl_csv.php?periodo='+periodo);
 		}
