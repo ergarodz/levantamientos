@@ -519,59 +519,59 @@
             return $query->fetchAll(PDO::FETCH_OBJ);
         }
 
-        public function checkDir_archivo_crudo($fup){/////////////////LOCAL
-            $xyz=true;//para saber si el directorio es correcto
-            if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/theme2/files')){//verifica la carpeta raíz    
-                //echo 'La carpeta no existe y se procederá a crearla';
-                if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/theme2/files')){//echo '<br>El directorio ha sido creado';
-                    $xyz=false;
-                }
-            }
-            $anio= date('Y');
-            if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/theme2/files/'.$anio)){//verifica la carpeta del usuario
-                if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/theme2/files/'.$anio)){
-                    $xyz=false;
-                }
-            }
-            if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/theme2/files/'.$anio.'/'.$fup)){//verifica la carpeta del mes
-            
-                if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/theme2/files/'.$anio.'/'.$fup ) ){
-                    $xyz=false;
-                }
-            }
-            if($xyz){
-                return 'C:/xampp/htdocs/levantamientoTopografico/theme2/files/'.$anio.'/'.$fup;
-            }else{
-                return 'Error';
-            }
-        }
-
-        // public function checkDir_archivo_crudo($fup){ ///////////////PARA SERVIDOR
+        // public function checkDir_archivo_crudo($fup){/////////////////LOCAL
         //     $xyz=true;//para saber si el directorio es correcto
-        //     if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files')){//verifica la carpeta raíz    
+        //     if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/lt2/files')){//verifica la carpeta raíz    
         //         //echo 'La carpeta no existe y se procederá a crearla';
-        //         if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files')){//echo '<br>El directorio ha sido creado';
+        //         if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/lt2/files')){//echo '<br>El directorio ha sido creado';
         //             $xyz=false;
         //         }
         //     }
-        //     $anio= date('Y'); 
-        //     if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files/'.$anio)){//verifica la carpeta del usuario
-        //         if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files/'.$anio)){
+        //     $anio= date('Y');
+        //     if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/lt2/files/'.$anio)){//verifica la carpeta del usuario
+        //         if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/lt2/files/'.$anio)){
         //             $xyz=false;
         //         }
         //     }
-        //     if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files/'.$anio.'/'.$fup)){//verifica la carpeta del mes
+        //     if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/lt2/files/'.$anio.'/'.$fup)){//verifica la carpeta del mes
             
-        //         if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files/'.$anio.'/'.$fup ) ){
+        //         if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/lt2/files/'.$anio.'/'.$fup ) ){
         //             $xyz=false;
         //         }
         //     }
         //     if($xyz){
-        //         return 'C:/xampp/htdocs/levantamientoTopografico/theme/lt/files/'.$anio.'/'.$fup;
+        //         return 'C:/xampp/htdocs/levantamientoTopografico/lt2/files/'.$anio.'/'.$fup;
         //     }else{
         //         return 'Error';
         //     }
         // }
+
+        public function checkDir_archivo_crudo($fup){ ///////////////PARA SERVIDOR
+            $xyz=true;//para saber si el directorio es correcto
+            if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files')){//verifica la carpeta raíz    
+                //echo 'La carpeta no existe y se procederá a crearla';
+                if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files')){//echo '<br>El directorio ha sido creado';
+                    $xyz=false;
+                }
+            }
+            $anio= date('Y'); 
+            if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files/'.$anio)){//verifica la carpeta del usuario
+                if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files/'.$anio)){
+                    $xyz=false;
+                }
+            }
+            if(!file_exists('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files/'.$anio.'/'.$fup)){//verifica la carpeta del mes
+            
+                if(!mkdir('C:/xampp/htdocs/levantamientoTopografico/theme/lt/files/'.$anio.'/'.$fup ) ){
+                    $xyz=false;
+                }
+            }
+            if($xyz){
+                return 'C:/xampp/htdocs/levantamientoTopografico/theme/lt/files/'.$anio.'/'.$fup;
+            }else{
+                return 'Error';
+            }
+        }
 
 
         public function get_geo_lt(){
