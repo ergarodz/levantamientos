@@ -93,6 +93,7 @@ function contarLim(tip){
 }
 
 function CalcularAnticipo(){/////se usa en la primera parte, cuando el usuario captura un registro
+
 	var supInicial ="";
 	var superficie =0;
 	var factorAplicable=0;
@@ -112,21 +113,22 @@ function CalcularAnticipo(){/////se usa en la primera parte, cuando el usuario c
 	}else{
 		//alert(fecha_recepcion);
 		//////comparamos las fechas para saber la tarifa por año a seleccionar
-		//var fecha_compara=new Date('2024-03-19');///hasta el 18 de marzo se va trabajar ocn la tarifa del 2023
 		var fecha_compara=new Date('2025-03-26');///hasta el 25 de marzo se va trabajar ocn la tarifa del 2024
 		var fecha_recepcion_date=new Date(fecha_recepcion);
 		if(fecha_compara<=fecha_recepcion_date){
-			//alert('Se trabaja con tarifa del 2024');
+			//alert('Se trabaja con tarifa del 2025');
 			anio_tarifa=2025;
 		}else{
-			//alert('se ocupan valores del 2023');
+			//alert('se ocupan valores del 2024');
 			anio_tarifa=2024;
 		}
 
 
 		supInicial =$("#supInicial").val();
 		if(supInicial!="" && supInicial!='0'){
+			//alert('here');
 			$.post("acceso/route.php",{acceess:78,supInicial:supInicial,anio_tarifa:anio_tarifa},function(yz){
+				//alert(yz);
 
 				$(yz).each(function(key,valuee){
 		    		superficie=supInicial - valuee.limiteinferior;
@@ -135,15 +137,15 @@ function CalcularAnticipo(){/////se usa en la primera parte, cuando el usuario c
 		    		factorAplicable2=parseFloat(factorAplicable);
 		    		cuotaFija2 = factorAplicable2 + cuotaFija;
 
-		    	});
+		    });
 				totalDeAnticipo=Math.round(cuotaFija2)
 				totalDeAnticipo2= totalDeAnticipo.toLocaleString("en-US", {
 			        style: "currency",
 			        currency: "USD"
-			    });
-					$("#anticipo").val(totalDeAnticipo2);
-				    
 		    });
+				$("#anticipo").val(totalDeAnticipo2);
+				    
+		  });
 		}else{
 			$("#anticipo").val("");
 		}

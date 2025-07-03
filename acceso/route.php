@@ -234,7 +234,7 @@ if(empty($Schlussel)){
           break;
           case 78:
                $supInicial = isset($_POST['supInicial']) ? $_POST['supInicial']:"";
-               echo $erick->calcularAnticipo($coxx,$supInicial);
+               echo $erick->calcularAnticipo($coxx,$supInicial);               
 
           break;
           case 77:             

@@ -244,7 +244,7 @@ class Controllermaster {
 
   public function buscaRegistroProceDos($c,$folioRegistro){
       $query = "select * from procesodos where folio='$folioRegistro' ;" ;
-      $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+      $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
      
       $rs = pg_query($c, $query);
       $validate_exixts = pg_num_rows($rs);
@@ -276,7 +276,7 @@ class Controllermaster {
               from procesodos as a 
               where a.folio=(select id from registros where fup='$fup' and activo is true)";
 
-      $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+      $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
      
       $rs = pg_query($c, $query);
       $validate_exixts = pg_num_rows($rs);
@@ -414,7 +414,7 @@ class Controllermaster {
 
     $query = "select * from procesotres where fol=$folioRegistro;"; 
 
-    $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+    $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
      
     $rs = pg_query($c, $query);
     $validate_exixts = pg_num_rows($rs);
@@ -726,7 +726,7 @@ class Controllermaster {
 
       $query = "select * from registros where fup='$fup' and id=$id;"; 
 
-      $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+      $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
      
       $rs = pg_query($c, $query);
       $validate_exixts = pg_num_rows($rs);
@@ -749,7 +749,7 @@ class Controllermaster {
 
       $query = "select * from procesodos where folio=$id;"; 
 
-      $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+      $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
      
       $rs = pg_query($c, $query);
       $validate_exixts = pg_num_rows($rs);
@@ -772,7 +772,7 @@ class Controllermaster {
 
       $query = "select * from procesotres where fol=$id;"; 
 
-      $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+      $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
      
       $rs = pg_query($c, $query);
       $validate_exixts = pg_num_rows($rs);
@@ -795,7 +795,7 @@ class Controllermaster {
 
       $query = "select * from procesocuatro where fol=$id;"; 
 
-      $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+      $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
      
       $rs = pg_query($c, $query);
       $validate_exixts = pg_num_rows($rs);
@@ -821,7 +821,7 @@ class Controllermaster {
                 on r.id = d.folio 
                 where fup='$fup' and r.id=$id;"; 
 
-      $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+      $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
      
       $rs = pg_query($c, $query);
       $validate_exixts = pg_num_rows($rs);
@@ -847,7 +847,7 @@ class Controllermaster {
   public function listadoMunicipios($c){
 
     $query = "select num, municipio from municipios order by municipio asc;"; 
-    $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+    $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
    
     $rs = pg_query($c, $query);
     $validate_exixts = pg_num_rows($rs);
@@ -892,8 +892,9 @@ class Controllermaster {
     $anio_tarifa=$_REQUEST['anio_tarifa'];
 
     $query = "select * from factoresaplicables where rango=$rango and anio=$anio_tarifa ";
+    //return $query;
 
-    $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+    $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
      
     $rs = pg_query($c, $query);
     $validate_exixts = pg_num_rows($rs);
@@ -990,7 +991,7 @@ class Controllermaster {
   public function calcularDiferencia($c,$folioGnral){
 
     $query = "select * from registros where activo is true and id='$folioGnral';";  
-    $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+    $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
     // Imprimiendo los resultados aarray
     $rs = pg_query( $c, $query );
     $validate_exixts = pg_num_rows($rs);
@@ -1035,7 +1036,7 @@ class Controllermaster {
   public function infoProcesoTres($c,$idfolio){
 
     $query = "select * from procesotres where fol=$idfolio;";  
-    $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+    $result = pg_query($c,$query) or die('La consulta fallo: ' . pg_last_error());
     // Imprimiendo los resultados aarray
     $rs = pg_query( $c, $query );
     $validate_exixts = pg_num_rows($rs);
@@ -1151,7 +1152,7 @@ class Controllermaster {
   public function actualizarProcesoCerrado($c,$fechaResguardo3,$oficioResguardoGeo,$observacionesC,$idRegistroUnico){
     //saber si ya esta registrado para poder actualizar y si no solo hacer el insert 
     $query = "select * from procesocuatro where fol=$idRegistroUnico;";  
-    $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+    $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
     
     $rs = pg_query( $c, $query );
     $validate_exixts = pg_num_rows($rs);
@@ -1178,7 +1179,7 @@ class Controllermaster {
   public function mostrarProcesoCerrado($c,$idFolioOcho){
 
     $query = "select * from procesocuatro where fol=$idFolioOcho;";  
-    $result = pg_query($query) or die('La consulta fallo: ' . pg_last_error());
+    $result = pg_query($c, $query) or die('La consulta fallo: ' . pg_last_error());
     // Imprimiendo los resultados aarray
     $rs = pg_query( $c, $query );
     $validate_exixts = pg_num_rows($rs);
