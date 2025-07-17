@@ -8,13 +8,15 @@
 		require_once 'Ops2.php';
 		$erick=new Ops2();
 	}	
+	//echo json_encode($_SESSION);
 
 	$reg=$erick->get_registro($fup);
 	//echo json_encode($reg);
 	$fecha_min_lt = date('Y-m-d', strtotime($reg->fecha_recepcion )); // Fecha mínima para el levantamiento
-
+	$especialistas=$erick->get_especialistas($_SESSION['delegacion']);
 	///obtener lista de especialistas por delegación
-	$especialistas=$erick->get_especialistas($reg->iddelegacion);
+	//$especialistas=$erick->get_especialistas($reg->iddelegacion);
+
 	//echo json_encode($especialistas);
 
 	////obtener lista de equipos/estaciones por delegación
